@@ -15,10 +15,19 @@ export function useDemo(on: boolean | undefined, steps: (() => void)[], ms: numb
     if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
     let i = 0;
     ref.current[0]?.();
-    const id = setInterval(() => {
+    const tick = () => {
       i = (i + 1) % ref.current.length;
       ref.current[i]();
-    }, ms);
-    return () => clearInterval(id);
+    };
+    // the first step usually just resets, so show the first real change almost at once
+    let id: ReturnType<typeof setInterval> | undefined;
+    const first = setTimeout(() => {
+      tick();
+      id = setInterval(tick, ms);
+    }, Math.min(400, ms));
+    return () => {
+      clearTimeout(first);
+      clearInterval(id);
+    };
   }, [on, ms]);
 }
