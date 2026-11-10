@@ -59,6 +59,11 @@ h1.display { font: 600 clamp(2.5rem, 7vw, var(--step-4))/1.05 var(--font-display
 .fig-placeholder { padding: var(--space-7) var(--space-5); text-align: center; color: var(--text-muted); font: 400 var(--step--1)/1.6 var(--font-mono); }
 
 /* FIG. 1: Ask Nhi */
+.ask-intro { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: var(--space-6); align-items: end; margin: 0 0 var(--space-6); }
+.ask-title { font: 600 clamp(2.2rem, 4.6vw, 3.8rem)/1.02 var(--font-display); color: var(--text); margin: 0; text-wrap: balance; }
+.ask-title em { color: var(--gold-500); }
+.ask-lede { margin: 0; color: var(--text-muted); max-width: 46ch; }
+@media (max-width: 760px) { .ask-intro { grid-template-columns: 1fr; gap: var(--space-3); } }
 .ask-body { display: grid; grid-template-columns: 300px 1fr; min-height: 420px; }
 .ask-chat { border-right: 1px solid var(--line); padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-3); }
 .ask-q { font: 400 var(--step--1)/1.4 var(--font-mono); text-align: left; background: transparent; color: var(--text); border: 1px solid var(--line-strong); border-radius: var(--radius-sm); padding: 10px 12px; cursor: pointer; transition: border-color .2s var(--ease), background .2s var(--ease); }

@@ -77,7 +77,15 @@ export default function Home() {
 
       {/* 3. Ask Nhi */}
       <section id="ask" aria-labelledby="ask-title">
-        <div className="section-bar"><span id="ask-title">Ask Nhi</span></div>
+        <div className="section-bar"><span>Ask Nhi</span><span>AI assistant</span></div>
+        <header className="ask-intro">
+          <h2 id="ask-title" className="ask-title">
+            Ask anything about <em>my work.</em>
+          </h2>
+          <p className="ask-lede">
+            Type a question or pick one below. An AI assistant answers from my projects and experience, and the graph lights up the parts it used.
+          </p>
+        </header>
         <AskNhi graph={graph} />
       </section>
 
