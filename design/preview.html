@@ -1,0 +1,609 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design Preview</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 400 var(--step-0)/1.6 var(--font-body); }
+  .page { max-width: 1080px; margin: 0 auto; padding: var(--space-7) 16px var(--space-8); position: relative; }
+  /* side threads, echoing the README */
+  .page::before, .page::after { content:""; position:absolute; top:0; bottom:0; width:1px; background: linear-gradient(var(--gold-700), transparent 85%); opacity:.6; }
+  .page::before { left: 0; } .page::after { right: 0; }
+  .eyebrow { font: 500 var(--step--1)/1 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--text-muted); }
+  h1 { font: 600 var(--step-4)/1.05 var(--font-display); color: var(--gold-300); margin: var(--space-3) 0 var(--space-2); letter-spacing: .02em; }
+  h2 { font: italic 500 var(--step-3)/1.1 var(--font-display); color: var(--gold-500); margin: var(--space-8) 0 var(--space-4); display:flex; align-items:center; gap: var(--space-3); }
+  h2::before { content:"◆"; font: 400 .9rem/1 var(--font-body); }
+  h2::after { content:""; flex:1; height:1px; background: var(--line-strong); }
+  .lede { color: var(--text-muted); max-width: 60ch; margin: 0; }
+  .divider { display:flex; align-items:center; gap: var(--space-3); color: var(--gold-500); margin: var(--space-5) 0; max-width: 340px; }
+  .divider::before, .divider::after { content:""; flex:1; height:1px; background: var(--gold-700); }
+
+  /* swatches */
+  .swatches { display:grid; grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); gap: var(--space-3); }
+  .sw { border:1px solid var(--line); border-radius: var(--radius); overflow:hidden; background: var(--bg-raised); }
+  .sw i { display:block; height:64px; }
+  .sw div { padding: var(--space-2) var(--space-3); font: 400 var(--step--1)/1.4 var(--font-mono); color: var(--text-muted); }
+  .sw b { display:block; color: var(--text); font-weight:500; }
+
+  /* type specimen */
+  .type { display:grid; gap: var(--space-4); }
+  .type .row { display:grid; grid-template-columns: 140px 1fr; gap: var(--space-4); align-items: baseline; border-bottom:1px solid var(--line); padding-bottom: var(--space-3); }
+  @media (max-width: 600px) { .type .row { grid-template-columns: 1fr; gap: var(--space-1); } }
+
+  /* parchment card */
+  .card { background: var(--ivory); color: var(--ink); border-radius: var(--radius); padding: var(--space-6); box-shadow: 0 1px 0 var(--ivory-shade) inset, 0 20px 40px -24px #000; position:relative;
+          background-image: repeating-linear-gradient(transparent 0 31px, rgb(58 42 18 / .08) 31px 32px); }
+  .card h3 { font: 600 var(--step-2)/1.2 var(--font-display); margin:0 0 var(--space-2); }
+  .card p { margin:0; color: var(--ink-muted); }
+  .chips { display:flex; flex-wrap:wrap; gap: var(--space-2); margin-top: var(--space-4); }
+  .chip { font: 500 var(--step--1)/1 var(--font-mono); padding: 6px 10px; border:1px solid var(--ink-muted); border-radius: 999px; color: var(--ink); }
+
+  /* figure frame */
+  .fig { border:1px solid var(--line); border-radius: var(--radius); background: var(--bg-raised); padding: var(--space-4); }
+  .fig-inner { background: var(--bg-sunken); border:1px solid var(--line); border-radius: var(--radius-sm); }
+  .fig-head { display:flex; justify-content:space-between; gap: var(--space-3); padding: var(--space-3) var(--space-4); font: 500 var(--step--1)/1.3 var(--font-mono); color: var(--text-muted); letter-spacing:.06em; flex-wrap: wrap; }
+  .fig-head .status { color: var(--gold-500); }
+  .fig-body { display:grid; grid-template-columns: 300px 1fr; min-height: 420px; }
+  @media (max-width: 760px) { .fig-body { grid-template-columns: 1fr; } }
+  .chat { border-right:1px solid var(--line); padding: var(--space-4); display:flex; flex-direction:column; gap: var(--space-3); }
+  @media (max-width: 760px) { .chat { border-right:0; border-bottom:1px solid var(--line); } }
+  .q { font: 400 var(--step--1)/1.4 var(--font-mono); text-align:left; background: transparent; color: var(--text); border:1px solid var(--line-strong); border-radius: var(--radius-sm); padding: 10px 12px; cursor:pointer; transition: border-color .2s var(--ease), background .2s var(--ease); }
+  .q:hover { border-color: var(--gold-700); }
+  .q[aria-pressed="true"] { border-color: var(--gold-500); background: rgb(224 176 74 / .08); }
+  .answer { font-size: var(--step--1); color: var(--text-muted); line-height:1.55; min-height: 6em; }
+  .answer cite { font-style: normal; font-family: var(--font-mono); color: var(--gold-300); }
+  .graph { position:relative; }
+  .graph svg { width:100%; height:100%; display:block; min-height: 380px; }
+  .thread { fill:none; stroke: var(--line-strong); stroke-width: var(--thread); transition: stroke .4s var(--ease), opacity .4s var(--ease); }
+  .thread.on { stroke: var(--gold-500); filter: drop-shadow(0 0 4px var(--gold-glow)); }
+  .dim .thread:not(.on) { opacity:.25; }
+  .node circle { fill: var(--bg-sunken); stroke: var(--line-strong); transition: all .4s var(--ease); }
+  .node.project circle { stroke: var(--gold-700); }
+  .node text { font: 400 10px var(--font-mono); fill: var(--text-faint); transition: fill .4s var(--ease); }
+  .node.project text { font-size: 11px; fill: var(--text-muted); }
+  .node.on circle { fill: var(--gold-500); stroke: var(--gold-300); filter: drop-shadow(0 0 6px var(--gold-glow)); }
+  .node.on text { fill: var(--gold-300); }
+  .node.hit circle { stroke: var(--navy-300); }
+  .dim .node:not(.on) { opacity:.45; }
+  .fig-cap { margin-top: var(--space-3); font: 400 var(--step--1)/1.5 var(--font-mono); color: var(--text-faint); }
+  .fig-cap b { color: var(--text); font-weight: 500; }
+
+  .navy { background: var(--navy-700); color: var(--ivory); border-radius: var(--radius); padding: var(--space-5); border:1px solid var(--navy-500); }
+  .navy .eyebrow { color: var(--navy-300); }
+  .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+  @media (max-width: 760px) { .grid2 { grid-template-columns: 1fr; } }
+  .note { color: var(--text-faint); font: 400 var(--step--1)/1.5 var(--font-mono); margin-top: var(--space-8); }
+</style>
+</head>
+<body>
+<div class="page">
+  <span class="eyebrow">Design preview · step 1</span>
+  <h1>Vo Xuan Nhi Tran</h1>
+  <div class="divider">◆</div>
+  <p class="lede">Software Engineering · University of Sydney. This page is a preview of the colors, type and figure frame. It is not the real site yet.</p>
+
+  <h2>palette</h2>
+  <div class="swatches" id="swatches"></div>
+
+  <h2>type</h2>
+  <div class="type">
+    <div class="row"><span class="eyebrow">Display</span><span style="font:600 var(--step-3)/1.1 var(--font-display);color:var(--gold-300)">Threads that hold</span></div>
+    <div class="row"><span class="eyebrow">Section</span><span style="font:italic 500 var(--step-2)/1.2 var(--font-display);color:var(--gold-500)">selected work</span></div>
+    <div class="row"><span class="eyebrow">Body</span><span>I build full-stack products end to end, from the database and API to CI and deployment.</span></div>
+    <div class="row"><span class="eyebrow">Label</span><span style="font:500 var(--step--1)/1.4 var(--font-mono);letter-spacing:.08em;color:var(--text-muted)">FIG. 2 · 20 UNSEEN ADS · 0% FALSE POSITIVES</span></div>
+  </div>
+
+  <h2>cards</h2>
+  <div class="grid2">
+    <div class="card">
+      <span class="eyebrow" style="color:var(--ink-muted)">Hackathon · 2026</span>
+      <h3>JobCompass</h3>
+      <p>Checks job ads against student-visa rules and quotes the ad as evidence. 75% accuracy, 0% false positives.</p>
+      <div class="chips"><span class="chip">Next.js</span><span class="chip">Gemini</span><span class="chip">Redis</span></div>
+    </div>
+    <div class="navy">
+      <span class="eyebrow">Navy · secondary surface</span>
+      <p style="font:500 var(--step-2)/1.2 var(--font-display);margin:var(--space-2) 0">Use navy rarely: a callout, the "thinking" state, a second highlight.</p>
+      <p style="margin:0;color:var(--ivory-shade);font-size:var(--step--1)">Put ivory or gold text on filled navy. Never put navy text on the dark page.</p>
+    </div>
+  </div>
+
+  <h2>figure frame</h2>
+  <div class="fig">
+    <div class="fig-inner">
+      <div class="fig-head"><span>ASK NHI · KNOWLEDGE GRAPH</span><span class="status" id="status">PICK A QUESTION</span></div>
+      <div class="fig-body">
+        <div class="chat" id="chat"></div>
+        <div class="graph"><svg id="graph" role="img" aria-label="Graph of Nhi's projects and skills"></svg></div>
+      </div>
+    </div>
+    <div class="fig-cap"><b>FIG. 1</b>&nbsp; Pick a question. The threads the answer is woven from light up. These are canned answers for the preview. The real chatbot comes in step 3.</div>
+  </div>
+
+  <p class="note">design/preview.html · open locally in a browser · tokens in design/tokens.css</p>
+</div>
+
+<script>
+const GRAPH = {
+  "_note": "Mirrors the skills: field in content/projects/*.md. Step 2 will generate it at build time, so edit the project files when skills change.",
+  "nodes": [
+    {
+      "id": "althea-room",
+      "label": "Althea Room LLC",
+      "kind": "experience",
+      "href": "/work/althea-room"
+    },
+    {
+      "id": "jobcompass",
+      "label": "JobCompass",
+      "kind": "project",
+      "href": "/work/jobcompass"
+    },
+    {
+      "id": "rag-document-assistant",
+      "label": "RAG Document Assistant",
+      "kind": "project",
+      "href": "/work/rag-document-assistant"
+    },
+    {
+      "id": "renopilot",
+      "label": "RenoPilot",
+      "kind": "project",
+      "href": "/work/renopilot"
+    },
+    {
+      "id": "talentmatch",
+      "label": "TalentMatch",
+      "kind": "project",
+      "href": "/work/talentmatch"
+    },
+    {
+      "id": "skill:android",
+      "label": "Android",
+      "kind": "skill",
+      "group": "platform"
+    },
+    {
+      "id": "skill:api-design",
+      "label": "API design",
+      "kind": "skill",
+      "group": "backend"
+    },
+    {
+      "id": "skill:authentication",
+      "label": "Authentication",
+      "kind": "skill",
+      "group": "security"
+    },
+    {
+      "id": "skill:aws",
+      "label": "AWS EC2",
+      "kind": "skill",
+      "group": "devops"
+    },
+    {
+      "id": "skill:ci",
+      "label": "CI",
+      "kind": "skill",
+      "group": "devops"
+    },
+    {
+      "id": "skill:client-communication",
+      "label": "Client comms",
+      "kind": "skill",
+      "group": "people"
+    },
+    {
+      "id": "skill:database-migration",
+      "label": "DB migration",
+      "kind": "skill",
+      "group": "database"
+    },
+    {
+      "id": "skill:django",
+      "label": "Django",
+      "kind": "skill",
+      "group": "backend"
+    },
+    {
+      "id": "skill:embeddings",
+      "label": "Embeddings",
+      "kind": "skill",
+      "group": "ai"
+    },
+    {
+      "id": "skill:evaluation",
+      "label": "Evaluation",
+      "kind": "skill",
+      "group": "quality"
+    },
+    {
+      "id": "skill:fastapi",
+      "label": "FastAPI",
+      "kind": "skill",
+      "group": "backend"
+    },
+    {
+      "id": "skill:github-actions",
+      "label": "GitHub Actions",
+      "kind": "skill",
+      "group": "devops"
+    },
+    {
+      "id": "skill:javascript",
+      "label": "JavaScript",
+      "kind": "skill",
+      "group": "language"
+    },
+    {
+      "id": "skill:leadership",
+      "label": "Leadership",
+      "kind": "skill",
+      "group": "people"
+    },
+    {
+      "id": "skill:llm",
+      "label": "LLMs",
+      "kind": "skill",
+      "group": "ai"
+    },
+    {
+      "id": "skill:nextjs",
+      "label": "Next.js",
+      "kind": "skill",
+      "group": "frontend"
+    },
+    {
+      "id": "skill:nginx",
+      "label": "Nginx",
+      "kind": "skill",
+      "group": "devops"
+    },
+    {
+      "id": "skill:pgvector",
+      "label": "pgvector",
+      "kind": "skill",
+      "group": "database"
+    },
+    {
+      "id": "skill:postgresql",
+      "label": "PostgreSQL",
+      "kind": "skill",
+      "group": "database"
+    },
+    {
+      "id": "skill:prompt-engineering",
+      "label": "Prompting",
+      "kind": "skill",
+      "group": "ai"
+    },
+    {
+      "id": "skill:python",
+      "label": "Python",
+      "kind": "skill",
+      "group": "language"
+    },
+    {
+      "id": "skill:rag",
+      "label": "RAG",
+      "kind": "skill",
+      "group": "ai"
+    },
+    {
+      "id": "skill:rate-limiting",
+      "label": "Rate limiting",
+      "kind": "skill",
+      "group": "backend"
+    },
+    {
+      "id": "skill:react",
+      "label": "React",
+      "kind": "skill",
+      "group": "frontend"
+    },
+    {
+      "id": "skill:redis",
+      "label": "Redis",
+      "kind": "skill",
+      "group": "database"
+    },
+    {
+      "id": "skill:security",
+      "label": "Security",
+      "kind": "skill",
+      "group": "security"
+    },
+    {
+      "id": "skill:testing",
+      "label": "Testing",
+      "kind": "skill",
+      "group": "quality"
+    },
+    {
+      "id": "skill:threejs",
+      "label": "Three.js",
+      "kind": "skill",
+      "group": "frontend"
+    },
+    {
+      "id": "skill:typescript",
+      "label": "TypeScript",
+      "kind": "skill",
+      "group": "language"
+    },
+    {
+      "id": "skill:websockets",
+      "label": "WebSockets",
+      "kind": "skill",
+      "group": "backend"
+    }
+  ],
+  "edges": [
+    {
+      "source": "althea-room",
+      "target": "skill:postgresql"
+    },
+    {
+      "source": "althea-room",
+      "target": "skill:api-design"
+    },
+    {
+      "source": "althea-room",
+      "target": "skill:authentication"
+    },
+    {
+      "source": "althea-room",
+      "target": "skill:github-actions"
+    },
+    {
+      "source": "althea-room",
+      "target": "skill:ci"
+    },
+    {
+      "source": "althea-room",
+      "target": "skill:security"
+    },
+    {
+      "source": "althea-room",
+      "target": "skill:android"
+    },
+    {
+      "source": "althea-room",
+      "target": "skill:database-migration"
+    },
+    {
+      "source": "jobcompass",
+      "target": "skill:nextjs"
+    },
+    {
+      "source": "jobcompass",
+      "target": "skill:typescript"
+    },
+    {
+      "source": "jobcompass",
+      "target": "skill:llm"
+    },
+    {
+      "source": "jobcompass",
+      "target": "skill:prompt-engineering"
+    },
+    {
+      "source": "jobcompass",
+      "target": "skill:evaluation"
+    },
+    {
+      "source": "jobcompass",
+      "target": "skill:redis"
+    },
+    {
+      "source": "jobcompass",
+      "target": "skill:rate-limiting"
+    },
+    {
+      "source": "rag-document-assistant",
+      "target": "skill:python"
+    },
+    {
+      "source": "rag-document-assistant",
+      "target": "skill:fastapi"
+    },
+    {
+      "source": "rag-document-assistant",
+      "target": "skill:react"
+    },
+    {
+      "source": "rag-document-assistant",
+      "target": "skill:pgvector"
+    },
+    {
+      "source": "rag-document-assistant",
+      "target": "skill:rag"
+    },
+    {
+      "source": "rag-document-assistant",
+      "target": "skill:embeddings"
+    },
+    {
+      "source": "rag-document-assistant",
+      "target": "skill:llm"
+    },
+    {
+      "source": "rag-document-assistant",
+      "target": "skill:testing"
+    },
+    {
+      "source": "rag-document-assistant",
+      "target": "skill:github-actions"
+    },
+    {
+      "source": "rag-document-assistant",
+      "target": "skill:aws"
+    },
+    {
+      "source": "rag-document-assistant",
+      "target": "skill:nginx"
+    },
+    {
+      "source": "renopilot",
+      "target": "skill:nextjs"
+    },
+    {
+      "source": "renopilot",
+      "target": "skill:typescript"
+    },
+    {
+      "source": "renopilot",
+      "target": "skill:threejs"
+    },
+    {
+      "source": "renopilot",
+      "target": "skill:postgresql"
+    },
+    {
+      "source": "renopilot",
+      "target": "skill:testing"
+    },
+    {
+      "source": "renopilot",
+      "target": "skill:leadership"
+    },
+    {
+      "source": "renopilot",
+      "target": "skill:client-communication"
+    },
+    {
+      "source": "talentmatch",
+      "target": "skill:django"
+    },
+    {
+      "source": "talentmatch",
+      "target": "skill:javascript"
+    },
+    {
+      "source": "talentmatch",
+      "target": "skill:postgresql"
+    },
+    {
+      "source": "talentmatch",
+      "target": "skill:redis"
+    },
+    {
+      "source": "talentmatch",
+      "target": "skill:websockets"
+    },
+    {
+      "source": "talentmatch",
+      "target": "skill:aws"
+    },
+    {
+      "source": "talentmatch",
+      "target": "skill:nginx"
+    },
+    {
+      "source": "talentmatch",
+      "target": "skill:security"
+    },
+    {
+      "source": "talentmatch",
+      "target": "skill:leadership"
+    }
+  ]
+};
+
+// palette swatches
+const sw = [["--bg","Page"],["--bg-raised","Panel"],["--gold-500","Gold accent"],["--gold-300","Gold light"],["--ivory","Parchment"],["--ink","Ink on parchment"],["--navy-700","Navy surface"],["--navy-300","Navy line"],["--text","Text"],["--text-muted","Muted text"]];
+const cs = getComputedStyle(document.documentElement);
+document.getElementById("swatches").innerHTML = sw.map(([v,n]) =>
+  `<div class="sw"><i style="background:var(${v})"></i><div><b>${n}</b>${cs.getPropertyValue(v).trim()}</div></div>`).join("");
+
+// canned Q&A for the preview
+const QA = [
+  { q: "Has Nhi used PostgreSQL in production?", sources: ["althea-room","talentmatch"], skills:["postgresql","database-migration"],
+    a: 'Yes. At Althea Room Nhi built 6 PostgreSQL tables and coordinated a production migration from DigitalOcean to OVH, verifying 12 tables by checksum <cite>[althea-room]</cite>. TalentMatch moved from SQLite to PostgreSQL with a least-privilege role <cite>[talentmatch]</cite>.' },
+  { q: "What has Nhi built with LLMs?", sources: ["jobcompass","rag-document-assistant"], skills:["llm","rag","evaluation"],
+    a: 'JobCompass combines Gemini extraction with rule-based checks, reaching 75% accuracy with 0% false positives <cite>[jobcompass]</cite>. The RAG Document Assistant grounds answers in PDFs using pgvector <cite>[rag-document-assistant]</cite>.' },
+  { q: "Has Nhi led a team?", sources: ["talentmatch","renopilot"], skills:["leadership"],
+    a: 'Nhi led 5 student engineers on TalentMatch, running meetings, the Git workflow and code reviews <cite>[talentmatch]</cite>, and rotated as Technical Lead on RenoPilot <cite>[renopilot]</cite>.' },
+  { q: "Security experience?", sources: ["althea-room","talentmatch"], skills:["security","authentication"],
+    a: 'Fixed 13 security findings across 5 repos and integrated central auth at Althea Room <cite>[althea-room]</cite>. Added RBAC, upload validation and firewall rules to TalentMatch <cite>[talentmatch]</cite>.' },
+];
+
+// layout: projects on an inner ring, skills on an outer ring
+const svg = document.getElementById("graph"), NS = "http://www.w3.org/2000/svg";
+const W = 640, H = 420, cx = W/2, cy = H/2;
+svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+const projects = GRAPH.nodes.filter(n => n.kind !== "skill");
+const skills = GRAPH.nodes.filter(n => n.kind === "skill");
+const pos = {};
+projects.forEach((n,i) => { const t = i/projects.length*2*Math.PI - Math.PI/2; pos[n.id] = [cx+Math.cos(t)*95, cy+Math.sin(t)*80]; });
+// order skills by the mean angle of their projects so the threads don't cross much
+const angleOf = id => Math.atan2(pos[id][1]-cy, pos[id][0]-cx);
+skills.forEach(s => {
+  const ps = GRAPH.edges.filter(e => e.target === s.id).map(e => angleOf(e.source));
+  s._a = Math.atan2(ps.reduce((a,t)=>a+Math.sin(t),0), ps.reduce((a,t)=>a+Math.cos(t),0));
+});
+skills.sort((a,b) => a._a - b._a).forEach((n,i) => { const t = i/skills.length*2*Math.PI + skills[0]._a; pos[n.id] = [cx+Math.cos(t)*225, cy+Math.sin(t)*180]; });
+
+const gT = document.createElementNS(NS,"g"), gN = document.createElementNS(NS,"g");
+svg.append(gT, gN);
+const threads = GRAPH.edges.map(e => {
+  const [x1,y1] = pos[e.source], [x2,y2] = pos[e.target];
+  const p = document.createElementNS(NS,"path");
+  // gentle curve through a point pulled toward the centre: looks like woven thread
+  const mx = (x1+x2)/2*0.85 + cx*0.15, my = (y1+y2)/2*0.85 + cy*0.15;
+  p.setAttribute("d", `M${x1},${y1} Q${mx},${my} ${x2},${y2}`);
+  p.setAttribute("class","thread"); p.dataset.s = e.source; p.dataset.t = e.target;
+  gT.append(p); return p;
+});
+const nodeEls = {};
+GRAPH.nodes.forEach(n => {
+  const g = document.createElementNS(NS,"g"); const [x,y] = pos[n.id];
+  g.setAttribute("class", "node " + (n.kind === "skill" ? "skill" : "project"));
+  const c = document.createElementNS(NS,"circle"); c.setAttribute("cx",x); c.setAttribute("cy",y); c.setAttribute("r", n.kind==="skill"?3.5:7);
+  const t = document.createElementNS(NS,"text"); t.textContent = n.label;
+  const right = x >= cx; t.setAttribute("x", x + (n.kind==="skill" ? (right?7:-7) : 0)); t.setAttribute("y", n.kind==="skill" ? y+3 : y-12);
+  t.setAttribute("text-anchor", n.kind==="skill" ? (right?"start":"end") : "middle");
+  const title = document.createElementNS(NS,"title"); title.textContent = n.label;
+  g.append(c,t,title); gN.append(g); nodeEls[n.id] = g;
+});
+
+// chat panel
+const chat = document.getElementById("chat"), status = document.getElementById("status");
+const ans = document.createElement("div"); ans.className = "answer"; ans.textContent = "Answers appear here, with the sources they cite.";
+const btns = QA.map((item, i) => {
+  const b = document.createElement("button"); b.className = "q"; b.textContent = item.q; b.setAttribute("aria-pressed","false");
+  b.onclick = () => run(i); chat.append(b); return b;
+});
+chat.append(ans);
+
+let timer;
+function run(i) {
+  const item = QA[i]; clearTimeout(timer);
+  btns.forEach((b,j) => b.setAttribute("aria-pressed", String(i===j)));
+  Object.values(nodeEls).forEach(g => g.classList.remove("on","hit"));
+  threads.forEach(p => p.classList.remove("on"));
+  svg.classList.add("dim");
+  status.textContent = "RETRIEVING…"; status.style.color = "var(--navy-300)";
+  ans.textContent = "";
+  // step 1: retrieved chunks (projects) light up
+  timer = setTimeout(() => {
+    item.sources.forEach(s => nodeEls[s].classList.add("on"));
+    threads.forEach(p => { if (item.sources.includes(p.dataset.s) && item.skills.includes(p.dataset.t.slice(6))) p.classList.add("on"); });
+    item.skills.forEach(s => nodeEls["skill:"+s] && nodeEls["skill:"+s].classList.add("on"));
+    status.textContent = `${item.sources.length} SOURCES WOVEN`; status.style.color = "";
+    ans.innerHTML = item.a;
+  }, 650);
+}
+
+// hover a skill: show which projects use it
+Object.entries(nodeEls).forEach(([id,g]) => {
+  if (!id.startsWith("skill:")) return;
+  g.addEventListener("mouseenter", () => { threads.forEach(p => p.dataset.t === id && p.classList.add("on")); g.classList.add("hit"); });
+  g.addEventListener("mouseleave", () => { threads.forEach(p => p.dataset.t === id && !svg.classList.contains("dim") && p.classList.remove("on")); g.classList.remove("hit"); });
+});
+</script>
+</body>
+</html>

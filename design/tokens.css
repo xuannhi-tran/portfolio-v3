@@ -1,0 +1,84 @@
+/*
+ * Portfolio design tokens: "woven gold"
+ * Based on the palette of github.com/xuannhi-tran's profile README.
+ * Gold threads on dark brown, ivory parchment cards, navy as the secondary color.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap");
+
+:root {
+  /* Surfaces */
+  --bg:            #16110a; /* page: dark brown-black */
+  --bg-raised:     #211a10; /* panels on the page */
+  --bg-sunken:     #0f0b06; /* inside figures */
+  --line:          #3a2e1a; /* hairlines and borders on dark */
+  --line-strong:   #5a4723;
+
+  /* Gold: the one accent */
+  --gold-300:      #f2d48a;
+  --gold-500:      #e0b04a; /* primary accent */
+  --gold-700:      #a77a22;
+  --gold-glow:     rgb(224 176 74 / 0.35);
+
+  /* Navy: secondary, used sparingly */
+  --navy-300:      #8fa2ff; /* lines and text on dark */
+  --navy-500:      #2b44c4;
+  --navy-700:      #14267a; /* filled surfaces */
+
+  /* Parchment cards */
+  --ivory:         #f6ecd2;
+  --ivory-shade:   #eadcb6;
+  --ink:           #3a2a12; /* text on ivory, never gold on ivory */
+  --ink-muted:     #6b5532;
+
+  /* Text on dark */
+  --text:          #efe6d2;
+  --text-muted:    #a8987a;
+  --text-faint:    #6f6250;
+
+  /* Status (inside figures) */
+  --ok:            #8fc68a;
+  --warn:          #e0b04a;
+  --bad:           #e2785f;
+
+  /* Type */
+  --font-display:  "Cormorant Garamond", Georgia, serif;
+  --font-body:     "Inter", system-ui, sans-serif;
+  --font-mono:     "JetBrains Mono", ui-monospace, monospace;
+
+  --step--1: 0.8125rem;
+  --step-0:  1rem;
+  --step-1:  1.25rem;
+  --step-2:  1.75rem;
+  --step-3:  2.5rem;
+  --step-4:  3.5rem;
+
+  /* Shape and space */
+  --radius-sm: 4px;
+  --radius:    10px;
+  --radius-lg: 16px;
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 72px;
+
+  --thread: 1px; /* stroke width of the "threads" */
+  --ease: cubic-bezier(.2,.7,.2,1);
+}
+
+/* Optional light theme: parchment page, ink text, gold kept as the accent */
+:root[data-theme="light"] {
+  --bg:          #f6ecd2;
+  --bg-raised:   #fbf5e4;
+  --bg-sunken:   #efe2c0;
+  --line:        #dcc99c;
+  --line-strong: #c4ab70;
+  --text:        #2e2210;
+  --text-muted:  #6b5532;
+  --text-faint:  #9a8560;
+  --gold-500:    #a77a22; /* darker gold so it stays readable on parchment */
+  --navy-300:    #2b44c4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --ease: linear; }
+  * { animation-duration: 0s !important; transition-duration: 0s !important; }
+}

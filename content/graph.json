@@ -1,0 +1,385 @@
+{
+  "_note": "Mirrors the skills: field in content/projects/*.md. Step 2 will generate it at build time, so edit the project files when skills change.",
+  "nodes": [
+    {
+      "id": "althea-room",
+      "label": "Althea Room LLC",
+      "kind": "experience",
+      "href": "/work/althea-room"
+    },
+    {
+      "id": "jobcompass",
+      "label": "JobCompass",
+      "kind": "project",
+      "href": "/work/jobcompass"
+    },
+    {
+      "id": "rag-document-assistant",
+      "label": "RAG Document Assistant",
+      "kind": "project",
+      "href": "/work/rag-document-assistant"
+    },
+    {
+      "id": "renopilot",
+      "label": "RenoPilot",
+      "kind": "project",
+      "href": "/work/renopilot"
+    },
+    {
+      "id": "talentmatch",
+      "label": "TalentMatch",
+      "kind": "project",
+      "href": "/work/talentmatch"
+    },
+    {
+      "id": "skill:android",
+      "label": "Android",
+      "kind": "skill",
+      "group": "platform"
+    },
+    {
+      "id": "skill:api-design",
+      "label": "API design",
+      "kind": "skill",
+      "group": "backend"
+    },
+    {
+      "id": "skill:authentication",
+      "label": "Authentication",
+      "kind": "skill",
+      "group": "security"
+    },
+    {
+      "id": "skill:aws",
+      "label": "AWS EC2",
+      "kind": "skill",
+      "group": "devops"
+    },
+    {
+      "id": "skill:ci",
+      "label": "CI",
+      "kind": "skill",
+      "group": "devops"
+    },
+    {
+      "id": "skill:client-communication",
+      "label": "Client comms",
+      "kind": "skill",
+      "group": "people"
+    },
+    {
+      "id": "skill:database-migration",
+      "label": "DB migration",
+      "kind": "skill",
+      "group": "database"
+    },
+    {
+      "id": "skill:django",
+      "label": "Django",
+      "kind": "skill",
+      "group": "backend"
+    },
+    {
+      "id": "skill:embeddings",
+      "label": "Embeddings",
+      "kind": "skill",
+      "group": "ai"
+    },
+    {
+      "id": "skill:evaluation",
+      "label": "Evaluation",
+      "kind": "skill",
+      "group": "quality"
+    },
+    {
+      "id": "skill:fastapi",
+      "label": "FastAPI",
+      "kind": "skill",
+      "group": "backend"
+    },
+    {
+      "id": "skill:github-actions",
+      "label": "GitHub Actions",
+      "kind": "skill",
+      "group": "devops"
+    },
+    {
+      "id": "skill:javascript",
+      "label": "JavaScript",
+      "kind": "skill",
+      "group": "language"
+    },
+    {
+      "id": "skill:leadership",
+      "label": "Leadership",
+      "kind": "skill",
+      "group": "people"
+    },
+    {
+      "id": "skill:llm",
+      "label": "LLMs",
+      "kind": "skill",
+      "group": "ai"
+    },
+    {
+      "id": "skill:nextjs",
+      "label": "Next.js",
+      "kind": "skill",
+      "group": "frontend"
+    },
+    {
+      "id": "skill:nginx",
+      "label": "Nginx",
+      "kind": "skill",
+      "group": "devops"
+    },
+    {
+      "id": "skill:pgvector",
+      "label": "pgvector",
+      "kind": "skill",
+      "group": "database"
+    },
+    {
+      "id": "skill:postgresql",
+      "label": "PostgreSQL",
+      "kind": "skill",
+      "group": "database"
+    },
+    {
+      "id": "skill:prompt-engineering",
+      "label": "Prompting",
+      "kind": "skill",
+      "group": "ai"
+    },
+    {
+      "id": "skill:python",
+      "label": "Python",
+      "kind": "skill",
+      "group": "language"
+    },
+    {
+      "id": "skill:rag",
+      "label": "RAG",
+      "kind": "skill",
+      "group": "ai"
+    },
+    {
+      "id": "skill:rate-limiting",
+      "label": "Rate limiting",
+      "kind": "skill",
+      "group": "backend"
+    },
+    {
+      "id": "skill:react",
+      "label": "React",
+      "kind": "skill",
+      "group": "frontend"
+    },
+    {
+      "id": "skill:redis",
+      "label": "Redis",
+      "kind": "skill",
+      "group": "database"
+    },
+    {
+      "id": "skill:security",
+      "label": "Security",
+      "kind": "skill",
+      "group": "security"
+    },
+    {
+      "id": "skill:testing",
+      "label": "Testing",
+      "kind": "skill",
+      "group": "quality"
+    },
+    {
+      "id": "skill:threejs",
+      "label": "Three.js",
+      "kind": "skill",
+      "group": "frontend"
+    },
+    {
+      "id": "skill:typescript",
+      "label": "TypeScript",
+      "kind": "skill",
+      "group": "language"
+    },
+    {
+      "id": "skill:websockets",
+      "label": "WebSockets",
+      "kind": "skill",
+      "group": "backend"
+    }
+  ],
+  "edges": [
+    {
+      "source": "althea-room",
+      "target": "skill:postgresql"
+    },
+    {
+      "source": "althea-room",
+      "target": "skill:api-design"
+    },
+    {
+      "source": "althea-room",
+      "target": "skill:authentication"
+    },
+    {
+      "source": "althea-room",
+      "target": "skill:github-actions"
+    },
+    {
+      "source": "althea-room",
+      "target": "skill:ci"
+    },
+    {
+      "source": "althea-room",
+      "target": "skill:security"
+    },
+    {
+      "source": "althea-room",
+      "target": "skill:android"
+    },
+    {
+      "source": "althea-room",
+      "target": "skill:database-migration"
+    },
+    {
+      "source": "jobcompass",
+      "target": "skill:nextjs"
+    },
+    {
+      "source": "jobcompass",
+      "target": "skill:typescript"
+    },
+    {
+      "source": "jobcompass",
+      "target": "skill:llm"
+    },
+    {
+      "source": "jobcompass",
+      "target": "skill:prompt-engineering"
+    },
+    {
+      "source": "jobcompass",
+      "target": "skill:evaluation"
+    },
+    {
+      "source": "jobcompass",
+      "target": "skill:redis"
+    },
+    {
+      "source": "jobcompass",
+      "target": "skill:rate-limiting"
+    },
+    {
+      "source": "rag-document-assistant",
+      "target": "skill:python"
+    },
+    {
+      "source": "rag-document-assistant",
+      "target": "skill:fastapi"
+    },
+    {
+      "source": "rag-document-assistant",
+      "target": "skill:react"
+    },
+    {
+      "source": "rag-document-assistant",
+      "target": "skill:pgvector"
+    },
+    {
+      "source": "rag-document-assistant",
+      "target": "skill:rag"
+    },
+    {
+      "source": "rag-document-assistant",
+      "target": "skill:embeddings"
+    },
+    {
+      "source": "rag-document-assistant",
+      "target": "skill:llm"
+    },
+    {
+      "source": "rag-document-assistant",
+      "target": "skill:testing"
+    },
+    {
+      "source": "rag-document-assistant",
+      "target": "skill:github-actions"
+    },
+    {
+      "source": "rag-document-assistant",
+      "target": "skill:aws"
+    },
+    {
+      "source": "rag-document-assistant",
+      "target": "skill:nginx"
+    },
+    {
+      "source": "renopilot",
+      "target": "skill:nextjs"
+    },
+    {
+      "source": "renopilot",
+      "target": "skill:typescript"
+    },
+    {
+      "source": "renopilot",
+      "target": "skill:threejs"
+    },
+    {
+      "source": "renopilot",
+      "target": "skill:postgresql"
+    },
+    {
+      "source": "renopilot",
+      "target": "skill:testing"
+    },
+    {
+      "source": "renopilot",
+      "target": "skill:leadership"
+    },
+    {
+      "source": "renopilot",
+      "target": "skill:client-communication"
+    },
+    {
+      "source": "talentmatch",
+      "target": "skill:django"
+    },
+    {
+      "source": "talentmatch",
+      "target": "skill:javascript"
+    },
+    {
+      "source": "talentmatch",
+      "target": "skill:postgresql"
+    },
+    {
+      "source": "talentmatch",
+      "target": "skill:redis"
+    },
+    {
+      "source": "talentmatch",
+      "target": "skill:websockets"
+    },
+    {
+      "source": "talentmatch",
+      "target": "skill:aws"
+    },
+    {
+      "source": "talentmatch",
+      "target": "skill:nginx"
+    },
+    {
+      "source": "talentmatch",
+      "target": "skill:security"
+    },
+    {
+      "source": "talentmatch",
+      "target": "skill:leadership"
+    }
+  ]
+}
