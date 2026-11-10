@@ -40,7 +40,25 @@ function json(status: number, message: string) {
   return Response.json({ error: message }, { status });
 }
 
+/**
+ * Only this site's own pages may ask. Browsers always send Origin on a cross-site POST and pages can't
+ * fake it, so another site can't spend the API budget through a visitor's browser. (A script outside a
+ * browser can still set any header; the rate limits below cover that.)
+ */
+function sameOrigin(req: Request) {
+  const origin = req.headers.get("origin");
+  const host = req.headers.get("x-forwarded-host") ?? req.headers.get("host");
+  if (!origin || !host) return false;
+  try {
+    return new URL(origin).host === host;
+  } catch {
+    return false;
+  }
+}
+
 export async function POST(req: Request) {
+  if (!sameOrigin(req)) return json(403, "Ask Nhi only answers questions from this site.");
+
   let question: string;
   try {
     const body = (await req.json()) as { question?: unknown };
