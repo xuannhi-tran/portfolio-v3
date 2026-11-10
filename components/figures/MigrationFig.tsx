@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useDemo } from "./useDemo";
 
 /*
  * FIG: database migration, as at Althea Room.
@@ -51,7 +52,7 @@ const PLAN = [
   { id: "rollback", label: "Keep the old cluster read-only for rollback" },
 ] as const;
 
-export default function MigrationFig() {
+export default function MigrationFig({ demo }: { demo?: boolean }) {
   const [stage, setStage] = useState<Stage>("idle");
   const [frozen, setFrozen] = useState(false);
   const [frozenAtCopy, setFrozenAtCopy] = useState(false);
@@ -149,6 +150,22 @@ export default function MigrationFig() {
     setChecks({});
     setLog(["$ focus-db migration · managed cluster → vps-01"]);
   }
+
+  // Autoplay: copy without a freeze, watch two hot tables fail the checksum, freeze, re-sync them, cut over.
+  const wait = () => {};
+  useDemo(
+    demo,
+    [
+      reset,
+      copy, wait, wait,
+      verify, wait, wait,
+      () => setFrozen(true),
+      () => bad.forEach(resync),
+      wait,
+      cutover, wait, wait, wait,
+    ],
+    1000,
+  );
 
   const done: Record<(typeof PLAN)[number]["id"], boolean> = {
     window: frozen || stage === "live",

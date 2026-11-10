@@ -24,7 +24,7 @@ export default function AltheaFig({ demo }: { demo?: boolean }) {
       {/* both stay mounted so switching tabs keeps each figure's progress */}
       {TABS.map(({ id, Component }) => (
         <div key={id} role="tabpanel" hidden={tab !== id}>
-          <Component demo={demo && id === "ci"} />
+          <Component demo={demo && id === tab} />
         </div>
       ))}
     </div>
