@@ -45,9 +45,3 @@ toolkit:
 I'm Nhi, a Software Engineering student in Sydney. I build full-stack products end to end, from the database and API to CI and deployment, and I care about shipping things that real people use.
 
 <!-- TODO(Nhi): add 2–3 sentences in your own voice. What got you into software? What do you enjoy building most? -->
-
-## How I work with AI
-
-I write most of my code together with an AI assistant. I treat it as a pair programmer: I own the design decisions, review every change, and back the result with tests, CI and evaluation, so I can explain and defend everything I ship.
-
-<!-- TODO(Nhi): edit this section so it matches how you actually work. -->
