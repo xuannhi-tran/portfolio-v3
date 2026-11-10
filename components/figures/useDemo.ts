@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 
 /**
- * Autoplay for a figure's hero preview: calls steps[0], steps[1], … one per tick, looping.
+ * Autoplay for a figure while it is on screen: calls steps[0], steps[1], … one per tick, looping.
  * The steps can close over the latest state, since they're read from a ref on every tick.
  */
 export function useDemo(on: boolean | undefined, steps: (() => void)[], ms: number) {

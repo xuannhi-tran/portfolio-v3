@@ -1,9 +1,9 @@
 /**
- * Decoration behind the hero: a warm gold glow and a few thin gold threads that run in from the edges
+ * Decoration behind the hero: a few thin gold threads that run in from the edges
  * and turn at right angles, like traces on a board (the weaving "threads" motif). Now and then a spark
  * of light runs along each one. Purely visual, so it is hidden from assistive tech and ignores the pointer.
  */
-// Threads stay on the right half, around the preview card, so they never run under the name or the list.
+// Threads stay on the right half, around the skill-graph card, so they never run under the name or the list.
 const THREADS = [
   "M1400 70 H1270 q-12 0 -12 12 V120 q0 12 -12 12 H1080",
   "M1400 250 H1340 q-12 0 -12 12 V330 q0 12 -12 12 H1240",
@@ -16,7 +16,6 @@ const THREADS = [
 export default function HeroBackdrop() {
   return (
     <div className="hero-backdrop" aria-hidden>
-      <div className="hero-glow" />
       <svg viewBox="0 0 1400 620" preserveAspectRatio="none">
         {THREADS.map((d, i) => (
           <g key={i}>

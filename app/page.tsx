@@ -48,13 +48,11 @@ export default function Home() {
             </div>
           </>
         }
-        items={projects.map((p, i) => ({
+        items={projects.map((p) => ({
           id: p.id,
           name: (p.type === "experience" ? p.org?.replace(/ LLC$/, "") : p.title) ?? p.title,
           tagline: p.tagline,
           current: p.type === "experience",
-          figureId: p.figure?.id,
-          fig: i + 2,
         }))}
       />
 

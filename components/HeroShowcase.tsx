@@ -2,7 +2,7 @@ import type { Graph } from "@/lib/content";
 import GraphMini from "@/components/GraphMini";
 import HeroBackdrop from "@/components/HeroBackdrop";
 
-export type HeroItem = { id: string; name: string; tagline?: string; current: boolean; figureId?: string; fig: number };
+export type HeroItem = { id: string; name: string; tagline?: string; current: boolean };
 
 /** Hero: name and the featured project list on the left, the mini skill graph on the right. */
 export default function HeroShowcase({ items, graph, name }: { items: HeroItem[]; graph: Graph; name: React.ReactNode }) {

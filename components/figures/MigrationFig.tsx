@@ -77,7 +77,7 @@ export default function MigrationFig({ demo }: { demo?: boolean }) {
     setFrozenAtCopy(frozen);
     say(frozen ? "$ app → read-only. writes frozen." : "! copying while the app is still writing");
     say("$ pg_dump -Fc focus | pg_restore -d focus_vps");
-    TABLES.forEach((t, i) => later(120 * (i + 1), () => setCopied(i + 1)));
+    TABLES.forEach((_, i) => later(120 * (i + 1), () => setCopied(i + 1)));
     later(120 * TABLES.length + 150, () => {
       setStage("copied");
       say(`✓ restored ${TABLES.length} tables`);
@@ -217,7 +217,7 @@ export default function MigrationFig({ demo }: { demo?: boolean }) {
                 return (
                   <tr key={t.name} className={c ? `mg-${c.state}` : i < copied ? "mg-copied" : ""}>
                     <td>{t.name}</td>
-                    <td>{c ? (c.srcRows === c.dstRows ? c.srcRows.toLocaleString() : `${c.srcRows.toLocaleString()} → ${c.dstRows.toLocaleString()}`) : i < copied ? t.rows.toLocaleString() : "·"}</td>
+                    <td>{c ? (c.srcRows === c.dstRows ? c.srcRows.toLocaleString() : <><span>{c.srcRows.toLocaleString()} →</span> <span>{c.dstRows.toLocaleString()}</span></>) : i < copied ? t.rows.toLocaleString() : "·"}</td>
                     <td>{c ? (c.state === "ok" ? `✓ ${c.dst}` : `✗ ${c.src} ≠ ${c.dst}`) : ""}</td>
                     <td>
                       {c?.state === "bad" && (
