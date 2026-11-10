@@ -39,6 +39,13 @@ export default function Home() {
               <span>{rest.at(-1)}</span>
             </h1>
             <p className="hero-role">Software Engineer · University of Sydney</p>
+            <div className="hero-links">
+              <a className="hero-cv" href="/Vo_Xuan_Nhi_Tran_CV.pdf" target="_blank" rel="noopener">
+                Resume <span aria-hidden>↓</span>
+              </a>
+              <a href={profile.links.github} target="_blank" rel="noopener">GitHub ↗</a>
+              <a href={profile.links.linkedin} target="_blank" rel="noopener">LinkedIn ↗</a>
+            </div>
           </>
         }
         items={projects.map((p, i) => ({
