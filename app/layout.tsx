@@ -9,9 +9,13 @@ const display = Cormorant_Garamond({ subsets: ["latin", "vietnamese"], weight: [
 const body = Inter({ subsets: ["latin", "vietnamese"], variable: "--nf-body" });
 const mono = JetBrains_Mono({ subsets: ["latin", "vietnamese"], weight: ["400", "500"], variable: "--nf-mono" });
 
+const description = "Portfolio of Vo Xuan Nhi Tran, Software Engineering student at the University of Sydney. Ask Nhi anything: a RAG chatbot that answers from Nhi’s work, with sources.";
+
 export const metadata: Metadata = {
-  title: "Nhi Tran · Software Engineer",
-  description: "Portfolio of Vo Xuan Nhi Tran, Software Engineering student at the University of Sydney.",
+  title: { default: "Vo Xuan Nhi Tran", template: "%s · Vo Xuan Nhi Tran" },
+  description,
+  openGraph: { title: "Vo Xuan Nhi Tran", description, type: "website", locale: "en_AU", siteName: "Vo Xuan Nhi Tran" },
+  twitter: { card: "summary_large_image", title: "Vo Xuan Nhi Tran", description },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -20,7 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <div className="page">
           <header className="site-head">
-            <Link href="/" className="mark">Nhi Tran</Link>
+            <Link href="/" className="mark">Vo Xuan Nhi Tran</Link>
             <nav aria-label="Main">
               <Link href="/#work">Work</Link>
               <Link href="/#ask">Ask</Link>

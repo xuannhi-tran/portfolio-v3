@@ -12,7 +12,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const p = getProject((await params).id);
-  return { title: p ? `${p.title} · Nhi Tran` : "Not found" };
+  return { title: p ? p.title : "Not found" };
 }
 
 export default async function CaseStudy({ params }: Props) {
