@@ -3,7 +3,7 @@ id: althea-room
 type: experience
 title: Backend Software Engineer (Contributor)
 org: Althea Room LLC
-location: Remote, 20+ hrs/week
+location: Remote
 period: Oct 2026 – Present
 tagline: "Backend, migration & CI/CD"
 summary: "Backend APIs, a production database migration, security reviews and CI/CD across Althea's wellbeing apps: Life, Focus and Mind."
