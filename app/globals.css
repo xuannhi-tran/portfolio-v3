@@ -392,6 +392,8 @@ mark.vf-info { background: rgb(143 162 255 / .16); box-shadow: inset 0 -2px 0 va
 .room-hint { position: absolute; left: var(--space-3); bottom: var(--space-3); pointer-events: none; color: var(--text-faint); }
 .room-side { padding: var(--space-4); display: grid; gap: var(--space-3); align-content: start; }
 .room-side fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: var(--space-2); }
+.room-side legend { padding: 0; margin-bottom: var(--space-3); }
+.room-side fieldset + fieldset { margin-top: var(--space-2); }
 .room-quote { width: 100%; border-collapse: collapse; margin-top: var(--space-2); font-size: 13px; }
 .room-quote td { padding: 6px 0; border-bottom: 1px solid var(--line); color: var(--text-muted); }
 .room-quote td:last-child { text-align: right; font-family: var(--font-mono); color: var(--text); }
