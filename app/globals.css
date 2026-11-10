@@ -226,6 +226,7 @@ main > section { scroll-margin-top: 24px; }
 .work-points li::before { content: "–"; position: absolute; left: 0; color: var(--gold-700); }
 .work-points strong { color: var(--text); font-weight: 600; }
 .work-tags { font: 400 11px/1.6 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--text-faint); margin: var(--space-4) 0 var(--space-2); }
+.work-links { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); margin: 0; }
 .work-more { font: 500 var(--step--1)/1 var(--font-mono); color: var(--gold-500); text-decoration: none; letter-spacing: .06em; }
 .work-more:hover { text-decoration: underline; }
 

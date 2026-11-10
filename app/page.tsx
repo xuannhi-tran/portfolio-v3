@@ -113,7 +113,11 @@ export default function Home() {
                   ))}
                 </ul>
                 {p.stack.length > 0 && <p className="work-tags">{p.stack.join(" · ")}</p>}
-                <Link href={`/work/${p.id}`} className="work-more">Read the case study ↗</Link>
+                <p className="work-links">
+                  <Link href={`/work/${p.id}`} className="work-more">Read the case study ↗</Link>
+                  {p.links.live && <a href={p.links.live} className="work-more" target="_blank" rel="noopener">Live demo ↗</a>}
+                  {p.links.repo && <a href={p.links.repo} className="work-more" target="_blank" rel="noopener">Code ↗</a>}
+                </p>
               </div>
             </div>
             {p.figure && <FigureFrame figure={p.figure} n={i + 2} />}
