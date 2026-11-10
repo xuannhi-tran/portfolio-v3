@@ -117,6 +117,20 @@ h1.display { font: 600 clamp(2.5rem, 7vw, var(--step-4))/1.05 var(--font-display
 .node.hit text { fill: var(--text); }
 .dim .node:not(.on):not(.hub) { opacity: .45; }
 .dim .node.near:not(.on):not(.hub) { opacity: .8; }
+/* Ask graph: the nodes sit loose until a question; the answer weaves threads between the ones it uses */
+.ask-graph .thread:not(.shown) { opacity: 0; pointer-events: none; transition: opacity .3s var(--ease); }
+.ask-graph .thread.spoke.shown { animation: fade-in .6s var(--ease) backwards; animation-delay: var(--d, 0ms); }
+.ask-graph .thread.spoke.shown.seek { animation: fade-in .6s var(--ease) backwards, seek 1.2s linear infinite; }
+.ask-graph .thread.woven.shown { stroke-dasharray: 1; animation: weave .9s cubic-bezier(.5, 0, .2, 1) backwards; animation-delay: var(--d, 0ms); }
+@keyframes fade-in { from { opacity: 0; } }
+@keyframes weave { from { stroke-dashoffset: 1; } }
+.ask-graph .node.hub circle { transform-box: fill-box; transform-origin: center; }
+.ask-graph svg:not(.dim) .node.hub circle, .ask-graph svg.thinking .node.hub circle { animation: hub-breathe 2.4s ease-in-out infinite; }
+.ask-graph svg.thinking .node.hub circle { animation-duration: 1s; }
+@keyframes hub-breathe { 0%, 100% { filter: drop-shadow(0 0 0 rgb(224 176 74 / 0)); } 50% { filter: drop-shadow(0 0 10px rgb(224 176 74 / .55)); } }
+@media (prefers-reduced-motion: reduce) {
+  .ask-graph .thread.shown, .ask-graph .node.hub circle { animation: none !important; }
+}
 @media (max-width: 760px) {
   .ask-body { grid-template-columns: 1fr; }
   .ask-chat { border-right: 0; border-bottom: 1px solid var(--line); }

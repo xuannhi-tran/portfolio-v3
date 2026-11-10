@@ -129,8 +129,9 @@ export default function AskNhi({ graph }: { graph: Graph }) {
     (citedSources.has(s) && citedSkills.has(t)) || (s === "profile" && citedSources.has(t)) || hover === t;
   // while the answer is being written, the threads out to the retrieved sources pulse
   const threadSeek = (s: string, t: string) => s === "profile" && (phase === "retrieving" || (phase === "answering" && retrieved.has(t)));
-  // Before a question only "Nhi" is on the canvas. The answer weaves the graph open: the projects it
-  // retrieves or cites appear first, then threads draw out to the skills it uses, one after another.
+  // Before a question the nodes sit unconnected. The answer weaves the threads: out to the projects it
+  // retrieves or cites first, then from them to the skills it uses, one after another.
+  // Hovering a skill draws its threads too.
   const order = [...citedSkills];
   const shown = (id: string) => id === "profile" || citedSources.has(id) || citedSkills.has(id) || retrieved.has(id);
   const delay = (id: string) => (citedSkills.has(id) ? 250 + order.indexOf(id) * 70 : 0);
@@ -230,7 +231,7 @@ export default function AskNhi({ graph }: { graph: Graph }) {
                 {graph.edges.map((e) => {
                   const spoke = e.source === "profile";
                   const on = threadOn(e.source, e.target);
-                  const show = shown(e.source) && shown(e.target) && (on || spoke);
+                  const show = on || (spoke && shown(e.source) && shown(e.target));
                   return (
                     <path
                       key={e.source + e.target}
@@ -255,9 +256,7 @@ export default function AskNhi({ graph }: { graph: Graph }) {
                   const label = labelPos[n.id];
                   const on = citedSources.has(n.id) || citedSkills.has(n.id);
                   const near = !on && retrieved.has(n.id);
-                  const show = shown(n.id) ? "shown" : "";
-                  const cls = `node ${isSkill ? "skill" : n.kind === "profile" ? "project hub" : "project"} ${show} ${on ? "on" : ""} ${near ? "near" : ""} ${hover === n.id ? "hit" : ""}`;
-                  const d = { "--d": `${delay(n.id) + (isSkill ? 450 : 0)}ms` } as React.CSSProperties;
+                  const cls = `node ${isSkill ? "skill" : n.kind === "profile" ? "project hub" : "project"} ${on ? "on" : ""} ${near ? "near" : ""} ${hover === n.id ? "hit" : ""}`;
                   const inner = (
                     <>
                       <circle cx={x} cy={y} r={isSkill ? 3.5 : n.kind === "profile" ? 18 : 7} />
@@ -268,11 +267,11 @@ export default function AskNhi({ graph }: { graph: Graph }) {
                     </>
                   );
                   return isSkill ? (
-                    <g key={n.id} className={cls} style={d} onMouseEnter={() => setHover(n.id)} onMouseLeave={() => setHover(null)}>
+                    <g key={n.id} className={cls} onMouseEnter={() => setHover(n.id)} onMouseLeave={() => setHover(null)}>
                       {inner}
                     </g>
                   ) : (
-                    <a key={n.id} href={n.href} className={cls} style={d}>
+                    <a key={n.id} href={n.href} className={cls}>
                       {inner}
                     </a>
                   );
