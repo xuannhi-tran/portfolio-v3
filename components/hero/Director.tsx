@@ -29,6 +29,7 @@ export function useDirector(
   box: React.RefObject<HTMLDivElement | null>,
   content: React.RefObject<HTMLDivElement | null>,
   scale: number,
+  flat = false,
 ) {
   const [cam, setCam] = useState<Cam>({ x: 0, y: 0, z: 1, fx: 50, fy: 50 });
   const [cursor, setCursor] = useState<Cursor>({ x: 0, y: 0, on: false, down: false, clicks: 0 });
@@ -74,11 +75,11 @@ export function useDirector(
         px = r.x + r.w * fx;
         py = r.y + r.h * fy;
       }
-      zoom = z;
-      const c = camAt(z);
+      zoom = flat ? 1 : z;
+      const c = camAt(zoom);
       const { s } = frame();
       setCam(c);
-      setCursor((cur) => ({ ...cur, x: c.x + px * s * z, y: c.y + py * s * z, on: true }));
+      setCursor((cur) => ({ ...cur, x: c.x + px * s * zoom, y: c.y + py * s * zoom, on: true }));
       await sleep(MOVE_MS, isAlive);
     };
     const press = async () => {
@@ -140,7 +141,7 @@ export function useDirector(
     return () => {
       alive = false;
     };
-  }, [script, box, content]);
+  }, [script, box, content, flat]);
 
   return { cam, cursor };
 }

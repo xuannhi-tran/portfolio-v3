@@ -37,10 +37,11 @@ export default function HeroShowcase({ items, graph, name }: { items: HeroItem[]
   };
   const item = items.find((i) => i.id === active);
   const motion = useMotionOK();
+  const compact = useCompact();
   useLayoutEffect(() => {
-    if (active) document.documentElement.classList.add("hero-focus");
+    if (active && !compact) document.documentElement.classList.add("hero-focus");
     return () => document.documentElement.classList.remove("hero-focus");
-  }, [active]);
+  }, [active, compact]);
   const live = item?.figureId ? FIGURES[item.figureId] : undefined;
 
   return (
@@ -48,7 +49,7 @@ export default function HeroShowcase({ items, graph, name }: { items: HeroItem[]
       className="hero"
       // while a preview is playing and the pointer is over the hero, the rest of the page steps back
       onMouseLeave={() => document.documentElement.classList.remove("hero-focus")}
-      onMouseEnter={() => active && document.documentElement.classList.add("hero-focus")}
+      onMouseEnter={() => active && !compact && document.documentElement.classList.add("hero-focus")}
     >
       <HeroBackdrop />
       <div className="hero-text">
@@ -59,7 +60,14 @@ export default function HeroShowcase({ items, graph, name }: { items: HeroItem[]
               <a
                 href={`#${p.id}`}
                 className={active === p.id ? "is-active" : ""}
-                onMouseMove={pick(p.id)}
+                onMouseMove={compact ? undefined : pick(p.id)}
+                // on a touch screen the first tap plays the preview, the second tap opens the project
+                onClick={(e) => {
+                  if (compact && active !== p.id) {
+                    e.preventDefault();
+                    setActive(p.id);
+                  }
+                }}
                 onFocus={() => setActive(p.id)}
               >
                 <b>{p.name}</b>
@@ -78,7 +86,7 @@ export default function HeroShowcase({ items, graph, name }: { items: HeroItem[]
               <span>FIG. {item.fig} · {live.head}</span>
               <span className="fig-status">PREVIEW ↓</span>
             </div>
-            <Scaled key={item.id} script={motion ? SCRIPTS[item.figureId!] : undefined}>
+            <Scaled key={item.id} flat={compact} script={motion ? SCRIPTS[item.figureId!] : undefined}>
               {/* a scripted figure is driven by the cursor instead of its own autoplay */}
               <live.Component demo={!(motion && SCRIPTS[item.figureId!])} />
             </Scaled>
@@ -100,7 +108,7 @@ export default function HeroShowcase({ items, graph, name }: { items: HeroItem[]
  * preview's width, still fills the preview's height. Measured once on mount and on resize only, so the
  * demo changing the figure's content doesn't make the preview jump.
  */
-function Scaled({ children, script }: { children: React.ReactNode; script?: Step[] }) {
+function Scaled({ children, script, flat }: { children: React.ReactNode; script?: Step[]; flat?: boolean }) {
   const box = useRef<HTMLDivElement>(null);
   const inner = useRef<HTMLDivElement>(null);
   const [fit, setFit] = useState({ w: STAGE_W, scale: 0.55 });
@@ -132,7 +140,7 @@ function Scaled({ children, script }: { children: React.ReactNode; script?: Step
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
-  const { cam, cursor } = useDirector(script, box, inner, fit.scale);
+  const { cam, cursor } = useDirector(script, box, inner, fit.scale, flat);
   return (
     <div
       ref={box}
@@ -155,4 +163,17 @@ function useMotionOK() {
   const [ok, setOk] = useState(false);
   useLayoutEffect(() => setOk(!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches), []);
   return ok;
+}
+
+/** Phones and touch screens: the preview is small, so no camera zoom and the page is not dimmed. */
+function useCompact() {
+  const [c, setC] = useState(false);
+  useLayoutEffect(() => {
+    const mq = window.matchMedia("(max-width: 760px), (pointer: coarse)");
+    const f = () => setC(mq.matches);
+    f();
+    mq.addEventListener("change", f);
+    return () => mq.removeEventListener("change", f);
+  }, []);
+  return c;
 }
