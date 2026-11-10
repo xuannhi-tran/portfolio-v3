@@ -6,9 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "ingest": "node --env-file=.env.local --import tsx scripts/ingest.ts",
+    "ingest:dry": "node --import tsx scripts/ingest.ts --dry",
+    "eval": "node --env-file=.env.local --import tsx scripts/eval.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "1.7.0",
+    "@supabase/supabase-js": "2.118.0",
     "gray-matter": "4.0.3",
     "marked": "18.2.0",
     "next": "16.4.6",
@@ -21,6 +26,7 @@
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@types/three": "0.186.0",
+    "tsx": "4.23.15",
     "typescript": "5.9.3"
   }
 }

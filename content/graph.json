@@ -1,6 +1,12 @@
 {
-  "_note": "Mirrors the skills: field in content/projects/*.md. Step 2 will generate it at build time, so edit the project files when skills change.",
+  "_note": "Mirrors the skills: field in content/projects/*.md. 'profile' is the centre node (About Nhi, toolkit, FAQ); its edges go to every project and to toolkit skills no project lists.",
   "nodes": [
+    {
+      "id": "profile",
+      "label": "Nhi",
+      "kind": "profile",
+      "href": "#about"
+    },
     {
       "id": "althea-room",
       "label": "Althea Room LLC",
@@ -210,6 +216,24 @@
       "label": "WebSockets",
       "kind": "skill",
       "group": "backend"
+    },
+    {
+      "id": "skill:docker",
+      "label": "Docker",
+      "kind": "skill",
+      "group": "devops"
+    },
+    {
+      "id": "skill:java",
+      "label": "Java",
+      "kind": "skill",
+      "group": "language"
+    },
+    {
+      "id": "skill:git",
+      "label": "Git",
+      "kind": "skill",
+      "group": "devops"
     }
   ],
   "edges": [
@@ -380,6 +404,38 @@
     {
       "source": "talentmatch",
       "target": "skill:leadership"
+    },
+    {
+      "source": "profile",
+      "target": "skill:docker"
+    },
+    {
+      "source": "profile",
+      "target": "skill:java"
+    },
+    {
+      "source": "profile",
+      "target": "skill:git"
+    },
+    {
+      "source": "profile",
+      "target": "althea-room"
+    },
+    {
+      "source": "profile",
+      "target": "jobcompass"
+    },
+    {
+      "source": "profile",
+      "target": "rag-document-assistant"
+    },
+    {
+      "source": "profile",
+      "target": "renopilot"
+    },
+    {
+      "source": "profile",
+      "target": "talentmatch"
     }
   ]
 }

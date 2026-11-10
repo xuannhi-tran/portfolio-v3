@@ -68,6 +68,36 @@ h1.display { font: 600 clamp(2.5rem, 7vw, var(--step-4))/1.05 var(--font-display
 .ask-answer { font-size: var(--step--1); color: var(--text-muted); line-height: 1.55; min-height: 7em; margin: 0; }
 .cite { font-family: var(--font-mono); color: var(--gold-300); text-decoration: none; }
 .cite:hover { text-decoration: underline; }
+.ask-form { display: flex; flex-direction: column; gap: var(--space-2); }
+.ask-form textarea { font: 400 var(--step--1)/1.45 var(--font-body); color: var(--text); background: var(--bg-sunken); border: 1px solid var(--line-strong); border-radius: var(--radius-sm); padding: 10px 12px; resize: vertical; min-height: 64px; }
+.ask-form textarea:focus { outline: none; border-color: var(--gold-500); }
+.ask-form-row { display: flex; justify-content: space-between; align-items: center; }
+.ask-form-row small { font: 400 11px var(--font-mono); color: var(--text-faint); }
+.ask-form button, .ask-reset { font: 500 var(--step--1) var(--font-mono); color: var(--bg); background: var(--gold-500); border: 0; border-radius: var(--radius-sm); padding: 8px 14px; cursor: pointer; }
+.ask-form button:disabled { opacity: .45; cursor: default; }
+.ask-reset { align-self: flex-start; background: transparent; color: var(--text-muted); border: 1px solid var(--line-strong); }
+.ask-reset:hover { border-color: var(--gold-700); color: var(--gold-300); }
+.ask-suggest { display: flex; flex-direction: column; gap: var(--space-2); }
+.ask-asked { font: italic 500 var(--step-0)/1.35 var(--font-display); color: var(--text); margin: 0; }
+.ask-answer { color: var(--text); }
+.ask-error { color: var(--gold-300); }
+.ask-dots::after { content: "···"; font-family: var(--font-mono); letter-spacing: .2em; animation: askdots 1s steps(3) infinite; }
+@keyframes askdots { 0% { opacity: .3; } 50% { opacity: 1; } 100% { opacity: .3; } }
+.ask-sources { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.ask-sources li { display: flex; justify-content: space-between; gap: var(--space-2); font: 400 11px/1.4 var(--font-mono); }
+.ask-sources a { color: var(--text-muted); text-decoration: none; }
+.ask-sources a:hover { color: var(--gold-300); }
+.ask-sources b { color: var(--gold-300); font-weight: 500; }
+.ask-sources small { color: var(--text-faint); }
+.node.near circle { stroke: var(--gold-500); }
+.thread.spoke { stroke-dasharray: 2 4; }
+.thread.seek, .dim .thread.seek:not(.on) { stroke: var(--gold-500); opacity: .9; animation: seek 1.2s linear infinite; }
+@keyframes seek { to { stroke-dashoffset: -12; } }
+.node.hub circle { fill: var(--bg-sunken); stroke: var(--gold-500); }
+.node.hub text { font: italic 600 15px var(--font-display); fill: var(--gold-300); }
+.node.hub.on circle { fill: rgb(224 176 74 / .18); }
+.node.hub.on text { fill: var(--gold-300); }
+.dim .node.near { opacity: .8; }
 .ask-graph { display: flex; align-items: center; justify-content: center; padding: var(--space-3); }
 .ask-graph svg { width: 100%; height: clamp(340px, 34vw, 520px); display: block; }
 .thread { fill: none; stroke: var(--line-strong); stroke-width: var(--thread); transition: stroke .4s var(--ease), opacity .4s var(--ease); }
@@ -82,7 +112,8 @@ h1.display { font: 600 clamp(2.5rem, 7vw, var(--step-4))/1.05 var(--font-display
 .node.on text { fill: var(--gold-300); }
 .node.hit circle { stroke: var(--navy-300); }
 .node.hit text { fill: var(--text); }
-.dim .node:not(.on) { opacity: .45; }
+.dim .node:not(.on):not(.hub) { opacity: .45; }
+.dim .node.near:not(.on):not(.hub) { opacity: .8; }
 @media (max-width: 760px) {
   .ask-body { grid-template-columns: 1fr; }
   .ask-chat { border-right: 0; border-bottom: 1px solid var(--line); }

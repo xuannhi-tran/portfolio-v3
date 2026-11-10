@@ -8,10 +8,19 @@ tagline: "Visa checks with LLMs"
 summary: "Checking job ads against student-visa rules, with the ad itself quoted as evidence for every verdict."
 order: 2
 stack: [Next.js, TypeScript, Gemini API, Redis]
-skills: [nextjs, typescript, llm, prompt-engineering, evaluation, redis, rate-limiting]
+skills:
+  [
+    nextjs,
+    typescript,
+    llm,
+    prompt-engineering,
+    evaluation,
+    redis,
+    rate-limiting,
+  ]
 links:
-  live: # TODO(Nhi)
-  repo: # TODO(Nhi)
+  live: https://jobcompass-au.vercel.app/
+  repo: https://github.com/xuannhi-tran/Hackathon-Futura-Remix
 figure:
   id: fig-visa-check
   idea: "Pick or edit a job ad. The evidence gets highlighted, rules are applied, and the verdict quotes the ad as proof."

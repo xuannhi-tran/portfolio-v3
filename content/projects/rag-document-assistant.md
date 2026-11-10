@@ -8,10 +8,23 @@ tagline: "RAG over PDFs"
 summary: "Asking questions of PDFs in English or Vietnamese, with every answer grounded in the source text."
 order: 4
 stack: [Python, FastAPI, React, pgvector, AWS EC2, Nginx, GitHub Actions]
-skills: [python, fastapi, react, pgvector, rag, embeddings, llm, testing, github-actions, aws, nginx]
+skills:
+  [
+    python,
+    fastapi,
+    react,
+    pgvector,
+    rag,
+    embeddings,
+    llm,
+    testing,
+    github-actions,
+    aws,
+    nginx,
+  ]
 links:
-  live: # TODO(Nhi)
-  repo: # TODO(Nhi)
+  live: https://rag-frontend-lilac.vercel.app/
+  repo: https://github.com/xuannhi-tran/rag-document-assistant
 figure:
   id: fig-retrieval
   idea: "Ask a question and every chunk gets a cosine similarity score. The top-k chunks light up and the answer cites them."
@@ -23,6 +36,8 @@ figure:
 ## Problem
 
 <!-- TODO(Nhi): why did you build it? -->
+
+Honestly this project is mainly for me to learn about RAG, embedding...
 
 ## What I built
 

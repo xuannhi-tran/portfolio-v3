@@ -41,7 +41,7 @@ export type Profile = {
   html: string;
 };
 
-export type GraphNode = { id: string; label: string; kind: "project" | "experience" | "skill"; href?: string; group?: string };
+export type GraphNode = { id: string; label: string; kind: "profile" | "project" | "experience" | "skill"; href?: string; group?: string };
 export type Graph = { nodes: GraphNode[]; edges: { source: string; target: string }[] };
 
 /** Drop <!-- TODO --> comments so unfinished notes never reach the page. */

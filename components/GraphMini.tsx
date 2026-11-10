@@ -8,7 +8,7 @@ export default function GraphMini({ graph }: { graph: Graph }) {
     <a href="#ask" className="fig mini-graph" aria-label="Open FIG. 1: ask Nhi">
       <div className="fig-inner">
         <div className="fig-head">
-          <span>FIG. 1 · {graph.nodes.filter((n) => n.kind !== "skill").length} PROJECTS, {graph.edges.length} THREADS</span>
+          <span>FIG. 1 · {graph.nodes.filter((n) => n.kind === "project" || n.kind === "experience").length} PROJECTS, {graph.edges.length} THREADS</span>
           <span className="fig-status">ASK ↓</span>
         </div>
         <svg viewBox={`0 0 ${W} ${H}`} aria-hidden>
@@ -17,7 +17,7 @@ export default function GraphMini({ graph }: { graph: Graph }) {
           ))}
           {graph.nodes.map((n) => {
             const [x, y] = pos[n.id];
-            return <circle key={n.id} cx={x} cy={y} r={n.kind === "skill" ? 3 : 7} className={n.kind === "skill" ? "dot" : "dot project"} />;
+            return <circle key={n.id} cx={x} cy={y} r={n.kind === "skill" ? 3 : n.kind === "profile" ? 9 : 7} className={n.kind === "skill" ? "dot" : "dot project"} />;
           })}
         </svg>
       </div>
