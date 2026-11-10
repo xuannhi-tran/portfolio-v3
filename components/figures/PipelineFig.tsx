@@ -67,6 +67,8 @@ export default function PipelineFig({ demo }: { demo?: boolean }) {
 
   const remaining = FINDINGS.filter((f) => !fixed.has(f.id));
   const running = states.includes("running");
+  // nothing has run yet: nudge the visitor to press Run
+  const idle = runs === 0 && !running;
   const green = states.every((s) => s === "pass");
   const scanned = states[SCAN] === "fail" || states[SCAN] === "pass";
 
@@ -204,12 +206,12 @@ export default function PipelineFig({ demo }: { demo?: boolean }) {
         </div>
 
         <div className="pf-console">
-          <pre aria-live="polite">{log.slice(-9).join("\n")}</pre>
+          <pre aria-live="polite" className={idle ? "is-idle" : ""}>{log.slice(-9).join("\n")}</pre>
           <div className={`pf-merge ${green ? "ok" : scanned ? "blocked" : ""}`}>
             {green ? "✓ All checks passed. Merge and release unlocked." : scanned ? "✗ Merge and release blocked by security scan" : "Checks haven’t run"}
           </div>
           <div className="pf-actions">
-            <button className="pf-run" onClick={run} disabled={running}>
+            <button className={`pf-run ${idle ? "is-idle" : ""}`} onClick={run} disabled={running}>
               {running ? "Running…" : runs ? "Re-run" : "Run pipeline"}
             </button>
             {green && track < TRACKS.length - 1 && (
