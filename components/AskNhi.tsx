@@ -40,13 +40,27 @@ export default function AskNhi({ graph }: { graph: Graph }) {
   }, [answer, sources]);
   // profile and FAQ chunks belong to the "Nhi" node in the centre
   const nodeOf = (source: string) => (nodeIds.has(source) ? source : "profile");
-  const citedSources = new Set(cited.map((s) => nodeOf(s.source)));
   const skillNodes = useMemo(() => graph.nodes.filter((n) => n.kind === "skill"), [graph]);
   const said = `${asked ?? ""} ${answer}`.toLowerCase();
-  // light the skills the answer is actually about, not every skill of a cited project
   const mentioned = (label: string) => new RegExp(`(^|[^a-z0-9])${label.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}([^a-z0-9]|$)`).test(said);
-  const candidates = new Set(cited.flatMap((s) => (nodeOf(s.source) === "profile" ? skillNodes.map((n) => n.id) : s.skills.map((k) => `skill:${k}`))));
-  const citedSkills = new Set(skillNodes.filter((n) => candidates.has(n.id) && (mentioned(n.label) || mentioned(n.id.slice(6).replace(/-/g, " ")))).map((n) => n.id));
+  const isMentioned = (n: { id: string; label: string }) => mentioned(n.label) || mentioned(n.id.slice(6).replace(/-/g, " "));
+  const citedSources = new Set(cited.map((s) => nodeOf(s.source)));
+  // A profile chunk ("Software Engineer at Althea Room…") is cited under the centre node, so also light
+  // any project or job the answer is about by name.
+  if (citedSources.has("profile") && answer) {
+    for (const n of graph.nodes) {
+      if ((n.kind === "project" || n.kind === "experience") && mentioned(n.label.replace(/ LLC$/, ""))) citedSources.add(n.id);
+    }
+  }
+  // Light the skills the answer is actually about. When it names none (an overview of a project), light
+  // every skill of the projects it cites, so the whole branch glows.
+  const projectSkills = (id: string) => graph.edges.filter((e) => e.source === id).map((e) => e.target);
+  const citedSkills = new Set<string>();
+  for (const id of citedSources) {
+    const own = id === "profile" ? skillNodes.map((n) => n.id) : projectSkills(id);
+    const named = skillNodes.filter((n) => own.includes(n.id) && isMentioned(n)).map((n) => n.id);
+    (named.length || id === "profile" ? named : own).forEach((k) => citedSkills.add(k));
+  }
   const retrieved = new Set(sources.map((s) => nodeOf(s.source)));
   const busy = phase === "retrieving" || phase === "answering";
 
