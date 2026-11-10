@@ -184,16 +184,20 @@ export default function AskNhi({ graph }: { graph: Graph }) {
             </div>
 
             {phase === "done" && cited.length > 0 && (
-              <ol className="ask-sources">
-                {cited.map((s) => (
-                  <li key={s.id}>
-                    <Link href={hrefFor(s)}>
-                      <b>[{s.n}]</b> {s.title} · {s.heading}
-                    </Link>
-                    <small title="Cosine similarity between the question and this chunk">{s.similarity.toFixed(2)}</small>
-                  </li>
-                ))}
-              </ol>
+              <details className="ask-src">
+                <summary>
+                  {cited.length} source{cited.length === 1 ? "" : "s"}
+                </summary>
+                <ol className="ask-sources">
+                  {cited.map((s) => (
+                    <li key={s.id}>
+                      <Link href={hrefFor(s)}>
+                        <b>[{s.n}]</b> {s.title} · {s.heading}
+                      </Link>
+                    </li>
+                  ))}
+                </ol>
+              </details>
             )}
 
             {(phase === "done" || phase === "error") && (
@@ -267,9 +271,32 @@ function Answer({ text, sources }: { text: string; sources: Source[] }) {
             [{s.n}]
           </Link>
         ) : (
-          <span key={i}>{part}</span>
+          <Linkified key={i} text={part} />
         );
       })}
     </>
+  );
+}
+
+/** Plain links the answer writes out (LinkedIn, GitHub, any http URL) become real links. */
+const URL_RE = /((?:https?:\/\/)?(?:www\.)?(?:linkedin\.com|github\.com)\/[^\s)\]]+|https?:\/\/[^\s)\]]+)/g;
+
+function Linkified({ text }: { text: string }) {
+  return (
+    <span>
+      {text.split(URL_RE).map((part, i) => {
+        if (i % 2 === 0) return part;
+        const trail = part.match(/[.,;:!?]+$/)?.[0] ?? "";
+        const url = trail ? part.slice(0, -trail.length) : part;
+        return (
+          <span key={i}>
+            <a className="cite" href={url.startsWith("http") ? url : `https://${url}`} target="_blank" rel="noopener noreferrer">
+              {url}
+            </a>
+            {trail}
+          </span>
+        );
+      })}
+    </span>
   );
 }
