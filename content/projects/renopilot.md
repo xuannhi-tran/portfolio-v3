@@ -14,8 +14,8 @@ links:
   repo: # TODO(Nhi), only if the client allows it
 figure:
   id: fig-room-quote
-  idea: "Drag to look around the room. Swap the tiles, vanity or shower and the 3D preview and quote update together."
-  disclaimer: "Made-up prices. Not the client's interface or code."
+  idea: "Swap tiles, vanity or shower. The room and the quote update together."
+  disclaimer: "Made-up prices, not the client's code."
 ---
 
 # RenoPilot: 3D renovation quotes

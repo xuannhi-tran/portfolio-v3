@@ -23,8 +23,8 @@ links:
   repo: https://github.com/xuannhi-tran/Hackathon-Futura-Remix
 figure:
   id: fig-visa-check
-  idea: "Pick or edit a job ad. The evidence gets highlighted, rules are applied, and the verdict quotes the ad as proof."
-  disclaimer: "Made-up job ads. Simple patterns stand in for the Gemini extraction. Simplified rules, not migration advice."
+  idea: "Pick a job ad. The verdict quotes the ad as proof."
+  disclaimer: "Made-up ads, simplified rules. Not migration advice."
 ---
 
 # JobCompass: does this job fit my student visa?

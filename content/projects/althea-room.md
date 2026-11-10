@@ -25,8 +25,8 @@ skills:
   ]
 figure:
   id: fig-althea
-  idea: "Two tabs. CI/CD: run a mobile pull request through build, tests, dependency audit, Sonar and a security scan, fix what blocks it, then release to Google Play track by track. DB migration: copy 12 tables to a new server, verify every checksum, and only then cut over."
-  disclaimer: "Made-up repo, tables, findings and numbers. Not Althea Room's real code or data."
+  idea: "CI/CD: fix what blocks the pull request, then ship to Google Play. DB: copy, verify, then cut over."
+  disclaimer: "Made-up data, not Althea Room's code."
 ---
 
 # Althea Room: backend, migration and CI/CD

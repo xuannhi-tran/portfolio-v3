@@ -14,8 +14,8 @@ links:
   repo: # TODO(Nhi)
 figure:
   id: fig-match-score
-  idea: "Pick a role and drag the student's skills. The score, the per-skill breakdown and the biggest next win update as you go."
-  disclaimer: "Made-up roles and an illustrative formula, not TalentMatch's exact scoring."
+  idea: "Pick a role, drag the skills. The score updates as you go."
+  disclaimer: "Made-up roles, illustrative formula."
 ---
 
 # TalentMatch: internship matching platform

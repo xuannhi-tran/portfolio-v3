@@ -264,7 +264,7 @@ export default function AskNhi({ graph }: { graph: Graph }) {
         </div>
       </div>
       <figcaption id="fig1-cap" className="fig-cap">
-        <b>FIG. 1</b>&nbsp; Ask a question. Retrieval finds the closest chunks of Nhi’s portfolio (pgvector), Claude answers only from them, and each source lights up as the answer cites it. Hover a skill to see where it was used.
+        <b>FIG. 1</b>&nbsp; Claude answers only from Nhi’s portfolio, and the skills it uses light up.
       </figcaption>
     </figure>
   );

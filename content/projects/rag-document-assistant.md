@@ -27,8 +27,8 @@ links:
   repo: https://github.com/xuannhi-tran/rag-document-assistant
 figure:
   id: fig-retrieval
-  idea: "Ask a question and every chunk gets a cosine similarity score. The top-k chunks light up and the answer cites them."
-  disclaimer: "Made-up handbook. TF-IDF vectors computed in your browser stand in for the real neural embeddings."
+  idea: "Ask a question. The top chunks light up and the answer cites them."
+  disclaimer: "Made-up handbook, TF-IDF in your browser."
 ---
 
 # RAG Document Assistant
