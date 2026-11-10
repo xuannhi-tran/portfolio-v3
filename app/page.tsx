@@ -2,6 +2,7 @@ import Link from "next/link";
 import AskNhi from "@/components/AskNhi";
 import FigureFrame from "@/components/FigureFrame";
 import HeroShowcase from "@/components/HeroShowcase";
+import Reveal from "@/components/Reveal";
 import Timeline from "@/components/Timeline";
 import { getGraph, getProfile, getProjects, type Item } from "@/lib/content";
 
@@ -139,6 +140,7 @@ export default function Home() {
           <a href={profile.links.linkedin}>LinkedIn ↗</a>
         </p>
       </section>
+      <Reveal />
     </main>
   );
 }

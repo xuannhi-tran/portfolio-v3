@@ -3,6 +3,7 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import type { Graph } from "@/lib/content";
 import GraphMini from "@/components/GraphMini";
+import HeroBackdrop from "@/components/HeroBackdrop";
 import { FIGURES } from "@/components/figures/registry";
 
 export type HeroItem = { id: string; name: string; tagline?: string; current: boolean; figureId?: string; fig: number };
@@ -37,6 +38,7 @@ export default function HeroShowcase({ items, graph, name }: { items: HeroItem[]
 
   return (
     <section className="hero">
+      <HeroBackdrop />
       <div className="hero-text">
         {name}
         <ul className="featured">

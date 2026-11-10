@@ -451,3 +451,41 @@ mark.vf-info { background: rgb(143 162 255 / .16); box-shadow: inset 0 -2px 0 va
 .hero-preview .fig-head { flex-wrap: nowrap; }
 .hero-preview .fig-head > span:first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .hero-preview .fig-head > span:last-child { flex: none; }
+
+/* Hero atmosphere: warm glow, gold traces with a running spark, and a glass preview card */
+.hero { position: relative; isolation: isolate; }
+.hero > :not(.hero-backdrop) { position: relative; z-index: 1; }
+.hero-backdrop { position: absolute; z-index: 0; inset: -40px calc(-1 * clamp(16px, 4vw, 40px)); pointer-events: none; overflow: hidden; }
+.hero-glow { position: absolute; inset: 0; background:
+  radial-gradient(40% 55% at 72% 48%, rgb(224 176 74 / .16), transparent 70%),
+  radial-gradient(30% 40% at 22% 60%, rgb(224 176 74 / .06), transparent 70%); }
+.hero-backdrop svg { position: absolute; inset: 0; width: 100%; height: 100%; -webkit-mask-image: linear-gradient(90deg, transparent 46%, #000 56%); mask-image: linear-gradient(90deg, transparent 46%, #000 56%); }
+@media (max-width: 900px) { .hero-backdrop svg { display: none; } }
+.trace { fill: none; stroke: rgb(224 176 74 / .14); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.trace-spark { fill: none; stroke: var(--gold-300); stroke-width: 1.5; stroke-linecap: round; vector-effect: non-scaling-stroke;
+  stroke-dasharray: 8 100; stroke-dashoffset: 108; opacity: 0; filter: drop-shadow(0 0 4px rgb(224 176 74 / .8));
+  animation: spark 10.2s linear infinite; }
+@keyframes spark {
+  0% { stroke-dashoffset: 108; opacity: 0; }
+  2% { opacity: 1; }
+  28% { opacity: 1; }
+  30% { stroke-dashoffset: 0; opacity: 0; }
+  100% { stroke-dashoffset: 0; opacity: 0; }
+}
+.hero .hero-preview, .hero .mini-graph {
+  background: rgb(30 23 14 / .55);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2); backdrop-filter: blur(14px) saturate(1.2);
+  border-color: rgb(224 176 74 / .22);
+  box-shadow: 0 1px 0 rgb(246 236 210 / .06) inset, 0 40px 80px -30px rgb(0 0 0 / .8), 0 0 60px -20px rgb(224 176 74 / .25);
+  animation: float 9s ease-in-out infinite; }
+.hero .hero-preview .fig-inner, .hero .mini-graph .fig-inner { background: rgb(14 10 6 / .7); }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+/* Sections fade up as they scroll in (class added by components/Reveal.tsx) */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
+.reveal.is-in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .trace-spark { display: none; }
+  .hero .hero-preview, .hero .mini-graph { animation: none; }
+}
