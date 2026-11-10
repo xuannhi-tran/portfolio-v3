@@ -70,7 +70,7 @@ export default function Home() {
 
       {/* 3. Ask Nhi */}
       <section id="ask" aria-labelledby="ask-title">
-        <div className="section-bar"><span id="ask-title">Ask Nhi</span><span>Answers cite their sources</span></div>
+        <div className="section-bar"><span id="ask-title">Ask Nhi</span></div>
         <AskNhi graph={graph} />
       </section>
 

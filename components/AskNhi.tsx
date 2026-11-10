@@ -120,7 +120,7 @@ export default function AskNhi({ graph }: { graph: Graph }) {
     <figure className="fig" aria-labelledby="fig1-cap">
       <div className="fig-inner">
         <div className="fig-head">
-          <span>ASK NHI · KNOWLEDGE GRAPH</span>
+          <span>KNOWLEDGE GRAPH</span>
           <span className={`fig-status ${busy ? "is-thinking" : ""}`} aria-live="polite">
             {status}
           </span>
@@ -135,7 +135,7 @@ export default function AskNhi({ graph }: { graph: Graph }) {
               }}
             >
               <label htmlFor="ask-input" className="eyebrow">
-                Ask about Nhi’s work
+                Your question
               </label>
               <textarea
                 id="ask-input"
