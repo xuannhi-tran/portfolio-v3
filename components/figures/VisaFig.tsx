@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useDemo } from "./useDemo";
 
 /*
  * FIG: visa check, as in JobCompass.
@@ -96,12 +97,14 @@ function Highlighted({ text, findings }: { text: string; findings: Finding[] }) 
   return <>{parts}</>;
 }
 
-export default function VisaFig() {
+export default function VisaFig({ demo }: { demo?: boolean }) {
   const [ad, setAd] = useState(0);
   const [text, setText] = useState(ADS[0].text);
   const [editing, setEditing] = useState(false);
   const findings = useMemo(() => analyse(text), [text]);
   const v = verdict(findings);
+
+  useDemo(demo, ADS.map((a, i) => () => { setAd(i); setText(a.text); setEditing(false); }), 3200);
 
   return (
     <div className="vf">

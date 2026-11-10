@@ -10,7 +10,7 @@ const TABS = [
   { id: "db", label: "DB migration · 12 tables", Component: MigrationFig },
 ] as const;
 
-export default function AltheaFig() {
+export default function AltheaFig({ demo }: { demo?: boolean }) {
   const [tab, setTab] = useState<(typeof TABS)[number]["id"]>("ci");
   return (
     <div>
@@ -24,7 +24,7 @@ export default function AltheaFig() {
       {/* both stay mounted so switching tabs keeps each figure's progress */}
       {TABS.map(({ id, Component }) => (
         <div key={id} role="tabpanel" hidden={tab !== id}>
-          <Component />
+          <Component demo={demo && id === "ci"} />
         </div>
       ))}
     </div>

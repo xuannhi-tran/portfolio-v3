@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useDemo } from "./useDemo";
 
 /*
  * FIG: retrieval, as in the RAG Document Assistant.
@@ -68,7 +69,7 @@ function cosine(a: Vec, b: Vec) {
   return n ? dot / n : 0;
 }
 
-export default function RetrievalFig() {
+export default function RetrievalFig({ demo }: { demo?: boolean }) {
   const index = useMemo(buildIndex, []);
   const [q, setQ] = useState(PRESETS[1]);
   const [k, setK] = useState(2);
@@ -95,6 +96,8 @@ export default function RetrievalFig() {
     setAsked(text);
     setRun((r) => r + 1);
   }
+
+  useDemo(demo, PRESETS.map((p) => () => ask(p)), 2600);
 
   return (
     <div className="rf">

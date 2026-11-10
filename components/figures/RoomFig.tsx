@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useDemo } from "./useDemo";
 import type * as THREE_NS from "three";
 
 /*
@@ -56,13 +57,24 @@ function quote(c: Choice) {
 
 type Api = { apply: (c: Choice) => void; dispose: () => void };
 
-export default function RoomFig() {
+export default function RoomFig({ demo }: { demo?: boolean }) {
   const mount = useRef<HTMLDivElement>(null);
   const api = useRef<Api | null>(null);
   const [choice, setChoice] = useState<Choice>({ tiles: 1, vanity: 1, shower: 0 });
   const [ready, setReady] = useState(false);
   const [failed, setFailed] = useState<string | null>(null);
   const q = quote(choice);
+
+  useDemo(
+    demo,
+    [
+      () => setChoice({ tiles: 1, vanity: 1, shower: 0 }),
+      () => setChoice({ tiles: 2, vanity: 1, shower: 0 }),
+      () => setChoice({ tiles: 2, vanity: 2, shower: 1 }),
+      () => setChoice({ tiles: 0, vanity: 2, shower: 2 }),
+    ],
+    2200,
+  );
 
   useEffect(() => {
     let cancelled = false;

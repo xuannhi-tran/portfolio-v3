@@ -88,7 +88,12 @@ h1.display { font: 600 clamp(2.5rem, 7vw, var(--step-4))/1.05 var(--font-display
 .ask-sources a { color: var(--text-muted); text-decoration: none; }
 .ask-sources a:hover { color: var(--gold-300); }
 .ask-sources b { color: var(--gold-300); font-weight: 500; }
-.ask-sources small { color: var(--text-faint); }
+.ask-src summary { cursor: pointer; width: fit-content; font: 500 11px/1.4 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--text-faint); list-style: none; }
+.ask-src summary::-webkit-details-marker { display: none; }
+.ask-src summary::after { content: " ▸"; }
+.ask-src[open] summary::after { content: " ▾"; }
+.ask-src summary:hover { color: var(--gold-300); }
+.ask-src .ask-sources { margin-top: var(--space-2); }
 .node.near circle { stroke: var(--gold-500); }
 .thread.spoke { stroke-dasharray: 2 4; }
 .thread.seek, .dim .thread.seek:not(.on) { stroke: var(--gold-500); opacity: .9; animation: seek 1.2s linear infinite; }
@@ -432,3 +437,17 @@ mark.vf-info { background: rgb(143 162 255 / .16); box-shadow: inset 0 -2px 0 va
   .mg-top { grid-template-columns: minmax(0, 1fr); }
   .mg-arrow { display: none; }
 }
+
+/* Hero preview: the hovered project's figure, playing itself at reduced scale */
+.featured a.is-active b { color: var(--gold-300); }
+.featured a.is-active span { color: var(--text-muted); }
+.hero-preview { position: relative; display: block; padding: var(--space-3); }
+.hero-preview-link { position: absolute; inset: 0; z-index: 1; }
+.hero-preview .fig-inner { border-color: var(--gold-700); }
+.hero-stage { position: relative; height: clamp(260px, 28vw, 440px); overflow: hidden; pointer-events: none; }
+.hero-stage-inner { transform-origin: top left; }
+.hero-stage::after { content: ""; position: absolute; inset: auto 0 0 0; height: 48px; background: linear-gradient(transparent, var(--bg-sunken)); }
+/* keep the preview one fixed height: a long FIG. head wrapping to two lines shifted the list under the cursor */
+.hero-preview .fig-head { flex-wrap: nowrap; }
+.hero-preview .fig-head > span:first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hero-preview .fig-head > span:last-child { flex: none; }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useDemo } from "./useDemo";
 
 /*
  * FIG: match score, in the spirit of TalentMatch.
@@ -52,11 +53,24 @@ function score(role: Role, me: Record<Skill, number>) {
   return { parts, total, capped, tip };
 }
 
-export default function MatchFig() {
+export default function MatchFig({ demo }: { demo?: boolean }) {
   const [roleIdx, setRoleIdx] = useState(0);
   const [me, setMe] = useState<Record<Skill, number>>({ Python: 3, SQL: 2, Django: 1, React: 3, Git: 3, Communication: 4 });
   const role = ROLES[roleIdx];
   const { parts, total, capped, tip } = score(role, me);
+
+  const START: Record<Skill, number> = { Python: 3, SQL: 2, Django: 1, React: 3, Git: 3, Communication: 4 };
+  useDemo(
+    demo,
+    [
+      () => { setRoleIdx(0); setMe(START); },
+      () => setMe((m) => ({ ...m, Django: 3 })),
+      () => setMe((m) => ({ ...m, SQL: 3, Python: 4 })),
+      () => { setRoleIdx(1); setMe({ ...START, React: 1 }); },
+      () => setMe((m) => ({ ...m, React: 4 })),
+    ],
+    2000,
+  );
 
   return (
     <div className="mf">

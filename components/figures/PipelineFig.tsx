@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useDemo } from "./useDemo";
 
 /*
  * FIG: CI/CD, as at Althea Room.
@@ -53,7 +54,7 @@ const LOG: Record<(typeof STAGES)[number], string[]> = {
 
 const TRACKS = ["internal", "closed beta", "production"] as const;
 
-export default function PipelineFig() {
+export default function PipelineFig({ demo }: { demo?: boolean }) {
   const [states, setStates] = useState<StageState[]>(STAGES.map(() => "idle"));
   const [fixed, setFixed] = useState<Set<string>>(new Set());
   const [open, setOpen] = useState<string | null>(null);
@@ -127,6 +128,20 @@ export default function PipelineFig() {
     setTrack(-1);
     setLog(["$ waiting for a run"]);
   }
+
+  const wait = () => {};
+  useDemo(
+    demo,
+    [
+      reset,
+      run, wait, wait, wait,
+      () => setOpen(FINDINGS[0].id),
+      () => FINDINGS.forEach((f) => fix(f.id)),
+      run, wait, wait, wait,
+      promote, promote, promote, wait, wait,
+    ],
+    900,
+  );
 
   const label = (s: StageState) => (s === "idle" ? "queued" : s === "running" ? "running…" : s === "pass" ? "passed" : "failed");
 

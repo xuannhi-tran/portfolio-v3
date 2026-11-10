@@ -1,7 +1,7 @@
 import Link from "next/link";
 import AskNhi from "@/components/AskNhi";
 import FigureFrame from "@/components/FigureFrame";
-import GraphMini from "@/components/GraphMini";
+import HeroShowcase from "@/components/HeroShowcase";
 import Timeline from "@/components/Timeline";
 import { getGraph, getProfile, getProjects, type Item } from "@/lib/content";
 
@@ -28,28 +28,27 @@ export default function Home() {
   return (
     <main>
       {/* 1. Hero */}
-      <section className="hero">
-        <div className="hero-text">
-          <h1 className="display hero-name">
-            {first} {rest.slice(0, -1).join(" ")}
-            <br />
-            <span>{rest.at(-1)}</span>
-          </h1>
-          <p className="hero-role">Software Engineer · University of Sydney</p>
-          <ul className="featured">
-            {projects.map((p) => (
-              <li key={p.id}>
-                <a href={`#${p.id}`}>
-                  <b>{p.type === "experience" ? p.org?.replace(/ LLC$/, "") : p.title}</b>
-                  {p.type === "experience" && <i className="live-dot" aria-label="current" />}
-                  <span>{p.tagline}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <GraphMini graph={graph} />
-      </section>
+      <HeroShowcase
+        graph={graph}
+        name={
+          <>
+            <h1 className="display hero-name">
+              {first} {rest.slice(0, -1).join(" ")}
+              <br />
+              <span>{rest.at(-1)}</span>
+            </h1>
+            <p className="hero-role">Software Engineer · University of Sydney</p>
+          </>
+        }
+        items={projects.map((p, i) => ({
+          id: p.id,
+          name: (p.type === "experience" ? p.org?.replace(/ LLC$/, "") : p.title) ?? p.title,
+          tagline: p.tagline,
+          current: p.type === "experience",
+          figureId: p.figure?.id,
+          fig: i + 2,
+        }))}
+      />
 
       {/* 2. About */}
       <section id="about" className="about" aria-label="About">
