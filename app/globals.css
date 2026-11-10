@@ -489,3 +489,25 @@ mark.vf-info { background: rgb(143 162 255 / .16); box-shadow: inset 0 -2px 0 va
   .trace-spark { display: none; }
   .hero .hero-preview, .hero .mini-graph { animation: none; }
 }
+
+/* Hero preview as a screen recording: camera zoom, soft edge blur, and a cursor (components/hero/Director.tsx) */
+.hero-cam { transform-origin: 0 0; transition: transform .9s cubic-bezier(.55,0,.25,1); will-change: transform; }
+.hero-stage::before { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; opacity: 0; transition: opacity .8s var(--ease);
+  -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+  -webkit-mask-image: radial-gradient(ellipse 60% 55% at var(--fx, 50%) var(--fy, 50%), transparent 50%, #000 100%); mask-image: radial-gradient(ellipse 60% 55% at var(--fx, 50%) var(--fy, 50%), transparent 50%, #000 100%);
+  background: radial-gradient(ellipse 60% 55% at var(--fx, 50%) var(--fy, 50%), transparent 55%, rgb(10 7 4 / .45) 100%); }
+.hero-stage.is-zoom::before { opacity: 1; }
+.fake-cursor { position: absolute; left: 0; top: 0; z-index: 3; pointer-events: none; opacity: 0;
+  transition: transform .9s cubic-bezier(.55,0,.25,1), opacity .3s; filter: drop-shadow(0 2px 4px rgb(0 0 0 / .6)); }
+.fake-cursor.on { opacity: 1; }
+.fake-cursor svg { display: block; transition: transform .12s; transform-origin: 2px 2px; }
+.fake-cursor path { fill: #fff; stroke: #16110a; stroke-width: 1.2; stroke-linejoin: round; }
+.fake-cursor.down svg { transform: scale(.86); }
+.fake-cursor i { position: absolute; left: -12px; top: -12px; width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--gold-300); opacity: 0; transform: scale(.4); }
+.fake-cursor i { animation: click-ring .5s ease-out forwards; }
+@keyframes click-ring { from { opacity: .9; transform: scale(.4); } to { opacity: 0; transform: scale(1.4); } }
+/* Focus: while a hero preview plays, everything outside the hero dims and blurs slightly */
+.site-head, main > section:not(.hero) { transition: opacity .6s var(--ease), filter .6s var(--ease); }
+.hero-focus .site-head, .hero-focus main > section:not(.hero) { opacity: .25; filter: blur(3px); }
+.hero-focus .hero-name, .hero-focus .hero-role { opacity: .45; transition: opacity .6s var(--ease); }
+.hero-name, .hero-role { transition: opacity .6s var(--ease); }

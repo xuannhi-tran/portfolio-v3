@@ -5,6 +5,8 @@ import type { Graph } from "@/lib/content";
 import GraphMini from "@/components/GraphMini";
 import HeroBackdrop from "@/components/HeroBackdrop";
 import { FIGURES } from "@/components/figures/registry";
+import { FakeCursor, useDirector, type Step } from "@/components/hero/Director";
+import { SCRIPTS } from "@/components/hero/scripts";
 
 export type HeroItem = { id: string; name: string; tagline?: string; current: boolean; figureId?: string; fig: number };
 
@@ -34,10 +36,20 @@ export default function HeroShowcase({ items, graph, name }: { items: HeroItem[]
     setActive(id);
   };
   const item = items.find((i) => i.id === active);
+  const motion = useMotionOK();
+  useLayoutEffect(() => {
+    if (active) document.documentElement.classList.add("hero-focus");
+    return () => document.documentElement.classList.remove("hero-focus");
+  }, [active]);
   const live = item?.figureId ? FIGURES[item.figureId] : undefined;
 
   return (
-    <section className="hero">
+    <section
+      className="hero"
+      // while a preview is playing and the pointer is over the hero, the rest of the page steps back
+      onMouseLeave={() => document.documentElement.classList.remove("hero-focus")}
+      onMouseEnter={() => active && document.documentElement.classList.add("hero-focus")}
+    >
       <HeroBackdrop />
       <div className="hero-text">
         {name}
@@ -66,8 +78,9 @@ export default function HeroShowcase({ items, graph, name }: { items: HeroItem[]
               <span>FIG. {item.fig} · {live.head}</span>
               <span className="fig-status">PREVIEW ↓</span>
             </div>
-            <Scaled key={item.id}>
-              <live.Component demo />
+            <Scaled key={item.id} script={motion ? SCRIPTS[item.figureId!] : undefined}>
+              {/* a scripted figure is driven by the cursor instead of its own autoplay */}
+              <live.Component demo={!(motion && SCRIPTS[item.figureId!])} />
             </Scaled>
           </div>
           {/* the figure inside is only a preview; the whole card links to the real one */}
@@ -87,7 +100,7 @@ export default function HeroShowcase({ items, graph, name }: { items: HeroItem[]
  * preview's width, still fills the preview's height. Measured once on mount and on resize only, so the
  * demo changing the figure's content doesn't make the preview jump.
  */
-function Scaled({ children }: { children: React.ReactNode }) {
+function Scaled({ children, script }: { children: React.ReactNode; script?: Step[] }) {
   const box = useRef<HTMLDivElement>(null);
   const inner = useRef<HTMLDivElement>(null);
   const [fit, setFit] = useState({ w: STAGE_W, scale: 0.55 });
@@ -119,11 +132,27 @@ function Scaled({ children }: { children: React.ReactNode }) {
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
+  const { cam, cursor } = useDirector(script, box, inner, fit.scale);
   return (
-    <div ref={box} className="hero-stage" aria-hidden>
-      <div ref={inner} className="hero-stage-inner" style={{ width: fit.w, transform: `scale(${fit.scale})` }}>
-        {children}
+    <div
+      ref={box}
+      className={`hero-stage ${cam.z > 1 ? "is-zoom" : ""}`}
+      style={{ "--fx": `${cam.fx}%`, "--fy": `${cam.fy}%` } as React.CSSProperties}
+      aria-hidden
+    >
+      <div className="hero-cam" style={{ transform: `translate(${cam.x}px, ${cam.y}px) scale(${cam.z})` }}>
+        <div ref={inner} className="hero-stage-inner" style={{ width: fit.w, transform: `scale(${fit.scale})` }}>
+          {children}
+        </div>
       </div>
+      {script && <FakeCursor cursor={cursor} />}
     </div>
   );
+}
+
+/** False when the visitor asked for reduced motion: then figures just sit still. */
+function useMotionOK() {
+  const [ok, setOk] = useState(false);
+  useLayoutEffect(() => setOk(!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches), []);
+  return ok;
 }
