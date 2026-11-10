@@ -36,10 +36,13 @@ function plain(md: string) {
     .trim();
 }
 
-/** Safety net: even if a phone number or email slips into content, it never reaches the index. */
+/** The one email Nhi chose to publish (profile.md links.email); every other address is scrubbed. */
+const PUBLIC_EMAIL = (matter(fs.readFileSync(path.join(CONTENT, "profile.md"), "utf8")).data.links?.email ?? "").toLowerCase();
+
+/** Safety net: even if a phone number or another email slips into content, it never reaches the index. */
 function scrub(text: string) {
   return text
-    .replace(/[\w.+-]+@[\w-]+\.[\w.-]+/g, "[email removed]")
+    .replace(/[\w.+-]+@[\w-]+(?:\.[\w-]+)+/g, (m) => (PUBLIC_EMAIL && m.toLowerCase() === PUBLIC_EMAIL ? m : "[email removed]"))
     .replace(/(\+?\d[\d\s().-]{7,}\d)/g, (m) => (m.replace(/\D/g, "").length >= 8 ? "[number removed]" : m));
 }
 
@@ -70,7 +73,7 @@ function profileChunks(): Chunk[] {
       text: [
         `${who} is based in ${data.location} and is looking for: ${data.looking_for}.`,
         ...(data.facts ?? []).map((f: { label: string; value: string; sub?: string }) => `${f.label}: ${f.value}${f.sub ? ` (${f.sub})` : ""}.`),
-        `GitHub: ${data.links?.github ?? ""}. LinkedIn: ${data.links?.linkedin ?? ""}.`,
+        `Contact: email is best, ${data.links?.email ?? ""}. GitHub: ${data.links?.github ?? ""}. LinkedIn: ${data.links?.linkedin ?? ""}.`,
       ].join("\n"),
     },
     { ...base, id: "profile#education", heading: "Education", text: `${who}'s education:\n${items(data.education)}` },

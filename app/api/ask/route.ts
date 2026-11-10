@@ -18,7 +18,7 @@ const MAX_QUESTION = 300; // characters
 const PER_IP_HOUR = Number(process.env.ASK_PER_IP_HOUR || 10);
 const PER_DAY = Number(process.env.ASK_PER_DAY || 300);
 
-const IDK = "I don't know that one: my sources don't cover it. Try asking about Nhi's projects, skills or experience, or reach out on LinkedIn.";
+const IDK = "I don't know that one: my sources don't cover it. Try asking about Nhi's projects, skills or experience, or email Nhi at xuannhi2k6@gmail.com.";
 
 type Event =
   | { type: "sources"; sources: (Omit<Match, "text"> & { n: number })[] }
@@ -84,7 +84,7 @@ export async function POST(req: Request) {
     return json(503, "The chatbot is unavailable right now. Please try again later.");
   }
   if (usage === "ip") return json(429, `That's ${PER_IP_HOUR} questions this hour. Please try again a bit later.`);
-  if (usage === "day") return json(429, "Ask Nhi has answered all it can for today. Please come back tomorrow, or reach out on LinkedIn.");
+  if (usage === "day") return json(429, "Ask Nhi has answered all it can for today. Please come back tomorrow, or email Nhi at xuannhi2k6@gmail.com.");
 
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {

@@ -37,4 +37,4 @@ I write most of my code together with an AI assistant. I treat it as a pair prog
 
 ## How can I contact you?
 
-The best way is LinkedIn: https://linkedin.com/in/xuannhi-tran
+Email is best: xuannhi2k6@gmail.com. I'm also on LinkedIn: https://linkedin.com/in/xuannhi-tran

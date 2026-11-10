@@ -137,14 +137,15 @@ export default function Home() {
 
       {/* 7. Contact */}
       <section id="contact" className="contact" aria-label="Contact">
-        <div className="section-bar"><span>Contact</span><span>LinkedIn is best</span></div>
+        <div className="section-bar"><span>Contact</span><span>Email is best</span></div>
         <p className="contact-lede">
           Looking for a {profile.looking_for.toLowerCase()}. Happy to talk about backend, AI products, or anything on this page.
         </p>
-        <a className="contact-big" href={profile.links.linkedin}>Say hi on LinkedIn ↗</a>
+        <a className="contact-big" href={`mailto:${profile.links.email}`}>{profile.links.email} ↗</a>
         <p className="contact-links">
-          <a href={profile.links.github}>GitHub ↗</a>
+          <a href={`mailto:${profile.links.email}`}>Email ↗</a>
           <a href={profile.links.linkedin}>LinkedIn ↗</a>
+          <a href={profile.links.github}>GitHub ↗</a>
         </p>
       </section>
       <Reveal />

@@ -290,8 +290,8 @@ function Answer({ text, sources }: { text: string; sources: Source[] }) {
   );
 }
 
-/** Plain links the answer writes out (LinkedIn, GitHub, any http URL) become real links. */
-const URL_RE = /((?:https?:\/\/)?(?:www\.)?(?:linkedin\.com|github\.com)\/[^\s)\]]+|https?:\/\/[^\s)\]]+)/g;
+/** Plain links the answer writes out (email, LinkedIn, GitHub, any http URL) become real links. */
+const URL_RE = /([\w.+-]+@[\w-]+\.[a-z]{2,}(?:\.[a-z]{2,})?|(?:https?:\/\/)?(?:www\.)?(?:linkedin\.com|github\.com)\/[^\s)\]]+|https?:\/\/[^\s)\]]+)/g;
 
 function Linkified({ text }: { text: string }) {
   return (
@@ -302,7 +302,7 @@ function Linkified({ text }: { text: string }) {
         const url = trail ? part.slice(0, -trail.length) : part;
         return (
           <span key={i}>
-            <a className="cite" href={url.startsWith("http") ? url : `https://${url}`} target="_blank" rel="noopener noreferrer">
+            <a className="cite" href={url.includes("@") ? `mailto:${url}` : url.startsWith("http") ? url : `https://${url}`} target="_blank" rel="noopener noreferrer">
               {url}
             </a>
             {trail}

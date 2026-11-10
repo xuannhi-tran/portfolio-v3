@@ -14,7 +14,7 @@ This folder defines what the "Ask Nhi" chatbot is allowed to know.
 
 ## Never indexed
 
-- Phone number, personal email and home address
+- Phone number and home address (the only email indexed is the public one in profile.md, xuannhi2k6@gmail.com)
 - Academic transcript and grades (share these on request only)
 - Anything confidential from Althea Room or client projects beyond what's on my public CV
 

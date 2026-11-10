@@ -6,6 +6,7 @@ preferred_name: Nhi
 location: Sydney, Australia
 looking_for: Software engineering internship or junior role
 links:
+  email: xuannhi2k6@gmail.com
   github: https://github.com/xuannhi-tran
   linkedin: https://linkedin.com/in/xuannhi-tran
 facts:
