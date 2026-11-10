@@ -176,9 +176,7 @@ export default function AskNhi({ graph }: { graph: Graph }) {
                 <span className="ask-error">{error}</span>
               ) : answer ? (
                 <Answer text={answer} sources={sources} />
-              ) : phase === "idle" ? (
-                "Answers are written by Claude from Nhi’s portfolio content, with the sources they cite."
-              ) : (
+              ) : phase === "idle" ? null : (
                 <span className="ask-dots" aria-label="Loading" />
               )}
             </div>
