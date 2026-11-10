@@ -1,13 +1,14 @@
 ---
 id: althea-room
 type: experience
-title: Software Engineer (Part-time)
+title: Backend Software Engineer (Contributor)
 org: Althea Room LLC
-location: Florida, USA (remote)
+location: Remote, 20+ hrs/week
 period: Oct 2026 – Present
-tagline: "Backend & CI"
-summary: "Backend, CI and security for a remote US team, from its first automated checks to a production database migration."
+tagline: "Backend, migration & CI/CD"
+summary: "Backend APIs, a production database migration, security reviews and CI/CD across Althea's wellbeing apps: Life, Focus and Mind."
 order: 1
+stack: [Python, PostgreSQL, GitHub Actions, SonarCloud, Android, React, Next.js]
 skills:
   [
     postgresql,
@@ -18,28 +19,29 @@ skills:
     security,
     android,
     database-migration,
+    testing,
+    react,
+    nextjs,
   ]
 figure:
-  id: fig-ci-pipeline
-  idea: "Run the pipeline on a pull request. The security scan blocks the merge until you open each finding, apply the fix and re-run."
-  disclaimer: "Made-up repo, findings and code. Not Althea Room's pipeline."
+  id: fig-althea
+  idea: "Two tabs. CI/CD: run a mobile pull request through build, tests, dependency audit, Sonar and a security scan, fix what blocks it, then release to Google Play track by track. DB migration: copy 12 tables to a new server, verify every checksum, and only then cut over."
+  disclaimer: "Made-up repo, tables, findings and numbers. Not Althea Room's real code or data."
 ---
 
-# Althea Room: backend, CI and security
+# Althea Room: backend, migration and CI/CD
 
 ## Problem
 
-<!-- TODO(Nhi): one or two sentences on what the team needed when you joined. Keep it to what's okay to share publicly. -->
-
-Althea Room ecosystem has different applications and when I join, the company is developing an application call Mind. This application is in its early stage and do not have proper backend setup so I'm the one responsible for it and work directly with CTO.
+Althea Room runs a family of wellbeing apps: Life, Focus and Mind. When I joined, Mind was at an early stage and had no proper backend yet. I took responsibility for it and worked directly with the CTO.
 
 ## What I did
 
-- Built **8 API endpoints and 6 PostgreSQL tables** for a backend service.
-- Integrated the company's **central authentication system**, replacing a development-only login with real session validation.
-- Introduced the Android project's **first automated CI checks** in GitHub Actions, covering builds, tests, static analysis and security scanning. Added CI and security workflows to the backend too.
-- Fixed **13 security findings across 5 backend repositories** and validated each fix against the existing test suites.
-- Coordinated a **production PostgreSQL migration** from DigitalOcean to OVH with the CTO, and verified all **12 tables via checksums**.
+- Built and extended **REST APIs** for Althea's wellbeing apps, including the **Mind backend (8 endpoints, 6 tables)** with shared authentication integrated from the Core service.
+- **Migrated the Focus PostgreSQL database** from a managed cluster to a self-hosted VPS, **verified 12/12 tables**, and prepared the cutover plans for Core and Focus.
+- Ran **security reviews across 5 backend repositories**, patching **13 issues**, and fixed auth and password-reset bugs found in beta testing.
+- Set up **CI/CD with GitHub Actions**: tests, dependency audit, Sonar, and a **release pipeline to Google Play**, for both backend and mobile repos.
+- Also contributed frontend fixes to the company landing site (React/Next.js) and ran beta QA.
 
 ## Result
 

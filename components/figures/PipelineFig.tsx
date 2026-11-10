@@ -3,50 +3,55 @@
 import { useEffect, useRef, useState } from "react";
 
 /*
- * FIG: CI pipeline, as at Althea Room.
- * A made-up pull request runs through build → test → static analysis → security scan.
+ * FIG: CI/CD, as at Althea Room.
+ * A made-up Android pull request runs through build → tests → dependency audit → Sonar → security scan.
  * The scan blocks the merge until each finding is fixed and the pipeline is re-run.
+ * Once it's green, the release goes to Google Play one track at a time.
  * Made-up repo, findings and code. Not Althea Room's pipeline.
  */
 
-const STAGES = ["build", "test", "static analysis", "security scan"] as const;
+const STAGES = ["build", "tests", "dependency audit", "sonar", "security scan"] as const;
+const SCAN = STAGES.length - 1;
 type StageState = "idle" | "running" | "pass" | "fail";
 
-type Finding = { id: string; severity: "HIGH" | "MEDIUM" | "LOW"; rule: string; file: string; before: string; after: string };
+type Finding = { id: string; severity: "HIGH" | "MEDIUM"; rule: string; file: string; before: string; after: string };
 
 const FINDINGS: Finding[] = [
   {
-    id: "sqli",
+    id: "token",
     severity: "HIGH",
-    rule: "SQL built from user input",
-    file: "api/bookings.py:42",
-    before: `cur.execute(f"SELECT * FROM bookings WHERE user_id = {user_id}")`,
-    after: `cur.execute("SELECT * FROM bookings WHERE user_id = %s", (user_id,))`,
+    rule: "Auth token stored in plain SharedPreferences",
+    file: "auth/TokenStore.kt:24",
+    before: `prefs.edit().putString("token", token).apply()`,
+    after: `encryptedPrefs.edit().putString("token", token).apply()`,
   },
   {
-    id: "secret",
+    id: "cleartext",
     severity: "HIGH",
-    rule: "Hard-coded secret",
-    file: "config/settings.py:9",
-    before: `JWT_SECRET = "dev-secret-123"`,
-    after: `JWT_SECRET = os.environ["JWT_SECRET"]`,
+    rule: "Cleartext HTTP traffic allowed",
+    file: "AndroidManifest.xml:12",
+    before: `android:usesCleartextTraffic="true"`,
+    after: `android:usesCleartextTraffic="false"`,
   },
   {
-    id: "cookie",
+    id: "log",
     severity: "MEDIUM",
-    rule: "Session cookie missing Secure flag",
-    file: "auth/session.py:17",
-    before: `resp.set_cookie("sid", sid, httponly=True)`,
-    after: `resp.set_cookie("sid", sid, httponly=True, secure=True, samesite="Lax")`,
+    rule: "Session token written to logs",
+    file: "auth/AuthRepository.kt:58",
+    before: `Log.d("auth", "login ok, token=$token")`,
+    after: `Log.d("auth", "login ok")`,
   },
 ];
 
 const LOG: Record<(typeof STAGES)[number], string[]> = {
-  build: ["docker build -t api:pr-218 .", "✓ image built in 41s"],
-  test: ["pytest -q", "✓ 126 passed in 18.2s"],
-  "static analysis": ["ruff check . && mypy api/", "✓ no issues"],
-  "security scan": ["bandit -r api/ && pip-audit"],
+  build: ["./gradlew assembleRelease", "✓ app-release.aab built in 1m 12s"],
+  tests: ["./gradlew testReleaseUnitTest", "✓ 214 passed in 38s"],
+  "dependency audit": ["./gradlew dependencyCheckAnalyze", "✓ 0 known-vulnerable dependencies"],
+  sonar: ["sonar-scanner (quality gate)", "✓ quality gate passed · coverage 81%"],
+  "security scan": ["mobsfscan app/"],
 };
+
+const TRACKS = ["internal", "closed beta", "production"] as const;
 
 export default function PipelineFig() {
   const [states, setStates] = useState<StageState[]>(STAGES.map(() => "idle"));
@@ -54,6 +59,7 @@ export default function PipelineFig() {
   const [open, setOpen] = useState<string | null>(null);
   const [log, setLog] = useState<string[]>(["$ waiting for a run"]);
   const [runs, setRuns] = useState(0);
+  const [track, setTrack] = useState(-1); // highest Google Play track reached
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   useEffect(() => () => timers.current.forEach(clearTimeout), []);
@@ -61,32 +67,33 @@ export default function PipelineFig() {
   const remaining = FINDINGS.filter((f) => !fixed.has(f.id));
   const running = states.includes("running");
   const green = states.every((s) => s === "pass");
-  const scanned = states[3] === "fail" || states[3] === "pass";
+  const scanned = states[SCAN] === "fail" || states[SCAN] === "pass";
 
   function run() {
     timers.current.forEach(clearTimeout);
     timers.current = [];
     setRuns((r) => r + 1);
+    setTrack(-1);
     setStates(STAGES.map(() => "idle"));
-    setLog([`$ run #${runs + 1} on pr-218 (feat: booking history)`]);
+    setLog([`$ run #${runs + 1} on focus-android · pr-341 (feat: offline streaks)`]);
     const willFail = remaining.length > 0;
     STAGES.forEach((stage, i) => {
-      const t0 = i * 700;
+      const t0 = i * 600;
       timers.current.push(
         setTimeout(() => {
           setStates((s) => s.map((x, j) => (j === i ? "running" : x)));
           setLog((l) => [...l, `$ ${LOG[stage][0]}`]);
         }, t0),
         setTimeout(() => {
-          const fail = i === 3 && willFail;
+          const fail = i === SCAN && willFail;
           setStates((s) => s.map((x, j) => (j === i ? (fail ? "fail" : "pass") : x)));
-          if (i < 3) setLog((l) => [...l, LOG[stage][1]]);
+          if (i < SCAN) setLog((l) => [...l, LOG[stage][1]]);
           else
             setLog((l) => [
               ...l,
-              willFail ? `✗ ${remaining.length} finding${remaining.length > 1 ? "s" : ""}, merge blocked` : "✓ 0 findings, merge allowed",
+              willFail ? `✗ ${remaining.length} finding${remaining.length > 1 ? "s" : ""}, merge and release blocked` : "✓ 0 findings, ready to release",
             ]);
-        }, t0 + 600),
+        }, t0 + 500),
       );
     });
   }
@@ -96,7 +103,19 @@ export default function PipelineFig() {
     setOpen(null);
     setLog((l) => [...l, `• patched ${FINDINGS.find((f) => f.id === id)!.file}, re-run to verify`]);
     // a fix invalidates the old result
-    setStates((s) => s.map((x, j) => (j === 3 && x === "fail" ? "idle" : x)));
+    setStates((s) => s.map((x, j) => (j === SCAN && x === "fail" ? "idle" : x)));
+  }
+
+  function promote() {
+    const next = track + 1;
+    const name = TRACKS[next];
+    setLog((l) => [...l, `$ fastlane supply --track ${name.replace(" ", "-")}${name === "production" ? " --rollout 0.1" : ""}`]);
+    timers.current.push(
+      setTimeout(() => {
+        setTrack(next);
+        setLog((l) => [...l, name === "production" ? "✓ live on Google Play · staged rollout 10%" : `✓ on the ${name} track`]);
+      }, 500),
+    );
   }
 
   function reset() {
@@ -105,17 +124,20 @@ export default function PipelineFig() {
     setFixed(new Set());
     setOpen(null);
     setRuns(0);
+    setTrack(-1);
     setLog(["$ waiting for a run"]);
   }
 
+  const label = (s: StageState) => (s === "idle" ? "queued" : s === "running" ? "running…" : s === "pass" ? "passed" : "failed");
+
   return (
     <div className="pf">
-      <ol className="pf-stages" aria-label="Pipeline stages">
+      <ol className="pf-stages pf-stages-5" aria-label="Pipeline stages">
         {STAGES.map((s, i) => (
           <li key={s} className={`pf-${states[i]}`}>
             <i aria-hidden />
             <span>{s}</span>
-            <small>{states[i] === "idle" ? "queued" : states[i] === "running" ? "running…" : states[i] === "pass" ? "passed" : "failed"}</small>
+            <small>{label(states[i])}</small>
           </li>
         ))}
       </ol>
@@ -151,16 +173,38 @@ export default function PipelineFig() {
               })}
             </ul>
           )}
+
+          <div className="pf-row pf-release-head">
+            <span className="eyebrow">Google Play release</span>
+            <span className="eyebrow">{green ? (track < 0 ? "ready" : TRACKS[track]) : "blocked until green"}</span>
+          </div>
+          <ol className="pf-tracks" aria-label="Google Play tracks">
+            {TRACKS.map((t, i) => (
+              <li key={t} className={i <= track ? "on" : ""}>
+                {t}
+                {t === "production" && <small> · 10% rollout</small>}
+              </li>
+            ))}
+          </ol>
         </div>
 
         <div className="pf-console">
           <pre aria-live="polite">{log.slice(-9).join("\n")}</pre>
           <div className={`pf-merge ${green ? "ok" : scanned ? "blocked" : ""}`}>
-            {green ? "✓ All checks passed. Ready to merge." : scanned ? "✗ Merge blocked by security scan" : "Checks haven’t run"}
+            {green ? "✓ All checks passed. Merge and release unlocked." : scanned ? "✗ Merge and release blocked by security scan" : "Checks haven’t run"}
           </div>
           <div className="pf-actions">
-            <button className="pf-run" onClick={run} disabled={running}>{running ? "Running…" : runs ? "Re-run" : "Run pipeline"}</button>
-            <button onClick={reset} disabled={running}>Reset</button>
+            <button className="pf-run" onClick={run} disabled={running}>
+              {running ? "Running…" : runs ? "Re-run" : "Run pipeline"}
+            </button>
+            {green && track < TRACKS.length - 1 && (
+              <button className="pf-run" onClick={promote}>
+                {track < 0 ? "Release to internal" : `Promote to ${TRACKS[track + 1]}`}
+              </button>
+            )}
+            <button onClick={reset} disabled={running}>
+              Reset
+            </button>
           </div>
         </div>
       </div>

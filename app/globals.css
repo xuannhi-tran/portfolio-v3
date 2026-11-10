@@ -387,3 +387,48 @@ mark.vf-info { background: rgb(143 162 255 / .16); box-shadow: inset 0 -2px 0 va
   .mf-sliders label { grid-template-columns: 100px 1fr 70px; }
   .room-view { min-height: 300px; border-right: 0; border-bottom: 1px solid var(--line); }
 }
+
+/* Althea: tabs, 5-stage pipeline, Google Play tracks */
+.alt-tabs { padding: var(--space-4) var(--space-4) 0; }
+.pf-stages.pf-stages-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.pf-release-head { margin-top: var(--space-4); }
+.pf-tracks { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); }
+.pf-tracks li { border: 1px dashed var(--line-strong); border-radius: var(--radius-sm); padding: 8px 10px; font: 500 11px/1.3 var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--text-faint); transition: all .3s var(--ease); }
+.pf-tracks li small { text-transform: none; letter-spacing: 0; }
+.pf-tracks li.on { border-style: solid; border-color: var(--ok); color: var(--ok); }
+
+/* Migration figure */
+.mg { padding: var(--space-4); display: grid; gap: var(--space-4); }
+.mg-top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(40px, .6fr) minmax(0, 1fr); align-items: center; gap: var(--space-3); }
+.mg-db { border: 1px solid var(--line-strong); border-radius: var(--radius-sm); padding: var(--space-3); display: grid; gap: 4px; transition: border-color .4s var(--ease); }
+.mg-db b { font: 500 14px var(--font-mono); color: var(--text); }
+.mg-db small { font: 400 11px var(--font-mono); color: var(--text-faint); }
+.mg-db.live { border-color: var(--gold-500); box-shadow: 0 0 0 1px rgb(224 176 74 / .25), 0 0 18px rgb(224 176 74 / .12); }
+.mg-db.live small { color: var(--gold-300); }
+.mg-arrow { height: 2px; background: var(--line-strong); position: relative; }
+.mg-arrow span { position: absolute; inset: 0 auto 0 0; background: var(--gold-500); transition: width .12s linear; }
+.mg-arrow::after { content: ""; position: absolute; right: -2px; top: -4px; border: 5px solid transparent; border-left-color: var(--line-strong); }
+.mg-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: var(--space-4); }
+.mg-table { width: 100%; border-collapse: collapse; font: 400 12px/1.4 var(--font-mono); }
+.mg-table th { text-align: left; font-weight: 500; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--text-faint); padding: 4px 6px; border-bottom: 1px solid var(--line); }
+.mg-table td { padding: 5px 6px; border-bottom: 1px solid var(--line); color: var(--text-faint); white-space: nowrap; }
+.mg-table tr.mg-copied td, .mg-table tr.mg-ok td, .mg-table tr.mg-bad td { color: var(--text-muted); }
+.mg-table tr.mg-ok td:nth-child(3) { color: var(--ok); }
+.mg-table tr.mg-bad td { color: var(--text); background: rgb(226 120 95 / .08); }
+.mg-table tr.mg-bad td:nth-child(3) { color: var(--bad); }
+.mg-table td:nth-child(3) { overflow: hidden; text-overflow: ellipsis; max-width: 0; width: 40%; }
+.mg-table button { font: 500 10px/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; background: transparent; color: var(--gold-300); border: 1px solid var(--gold-700); border-radius: 3px; padding: 4px 6px; cursor: pointer; }
+.mg-plan { margin: 0; padding-left: 1.3em; display: grid; gap: 4px; font: 400 12px/1.4 var(--font-mono); color: var(--text-faint); }
+.mg-plan li.done { color: var(--ok); }
+.mg-plan li.done::marker { content: "✓  "; }
+.mg-freeze { display: flex; align-items: center; gap: 8px; font: 500 12px var(--font-mono); color: var(--gold-300); text-transform: uppercase; letter-spacing: .08em; cursor: pointer; }
+.mg-freeze input { accent-color: var(--gold-500); width: 16px; height: 16px; }
+.mg .pf-console pre { min-height: 120px; }
+.mg-actions { flex-wrap: wrap; }
+.mg-hint { margin: 0; font: 400 12px/1.5 var(--font-mono); color: var(--gold-300); }
+@media (max-width: 760px) {
+  .pf-stages.pf-stages-5 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .mg-grid { grid-template-columns: minmax(0, 1fr); }
+  .mg-top { grid-template-columns: minmax(0, 1fr); }
+  .mg-arrow { display: none; }
+}

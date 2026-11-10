@@ -436,6 +436,18 @@
     {
       "source": "profile",
       "target": "talentmatch"
+    },
+    {
+      "source": "althea-room",
+      "target": "skill:testing"
+    },
+    {
+      "source": "althea-room",
+      "target": "skill:react"
+    },
+    {
+      "source": "althea-room",
+      "target": "skill:nextjs"
     }
   ]
 }

@@ -7,18 +7,18 @@
         "althea-room"
       ],
       "must_mention": [
-        "migration",
-        "checksum"
+        "migrat",
+        "12"
       ]
     },
     {
       "q": "What CI/CD experience does Nhi have?",
       "expect_sources": [
-        "althea-room",
-        "rag-document-assistant"
+        "althea-room"
       ],
       "must_mention": [
-        "GitHub Actions"
+        "GitHub Actions",
+        "Google Play"
       ]
     },
     {

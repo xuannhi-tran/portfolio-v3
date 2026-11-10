@@ -1,7 +1,7 @@
 import type { Figure } from "@/lib/content";
 import RetrievalFig from "@/components/figures/RetrievalFig";
 import VisaFig from "@/components/figures/VisaFig";
-import PipelineFig from "@/components/figures/PipelineFig";
+import AltheaFig from "@/components/figures/AltheaFig";
 import MatchFig from "@/components/figures/MatchFig";
 import RoomFig from "@/components/figures/RoomFig";
 
@@ -9,7 +9,7 @@ import RoomFig from "@/components/figures/RoomFig";
 const FIGURES: Record<string, { head: string; Component: React.ComponentType }> = {
   "fig-retrieval": { head: "RETRIEVAL · riverside_library_handbook.pdf · 8 CHUNKS", Component: RetrievalFig },
   "fig-visa-check": { head: "VISA CHECK · STUDENT VISA · 48 H / FORTNIGHT", Component: VisaFig },
-  "fig-ci-pipeline": { head: "CI · pr-218 · feat: booking history", Component: PipelineFig },
+  "fig-althea": { head: "ALTHEA · CI/CD + DB MIGRATION", Component: AltheaFig },
   "fig-match-score": { head: "MATCH SCORE · 2 ROLES · 6 SKILLS", Component: MatchFig },
   "fig-room-quote": { head: "QUOTE · BATHROOM 3.0 × 2.4 M", Component: RoomFig },
 };
