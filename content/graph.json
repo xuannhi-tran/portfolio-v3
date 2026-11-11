@@ -38,6 +38,12 @@
       "href": "/work/talentmatch"
     },
     {
+      "id": "air-quality-model",
+      "label": "Air Quality Model",
+      "kind": "project",
+      "href": "/work/air-quality-model"
+    },
+    {
       "id": "skill:android",
       "label": "Android",
       "kind": "skill",
@@ -234,6 +240,18 @@
       "label": "Git",
       "kind": "skill",
       "group": "devops"
+    },
+    {
+      "id": "skill:machine-learning",
+      "label": "Machine learning",
+      "kind": "skill",
+      "group": "ai"
+    },
+    {
+      "id": "skill:scikit-learn",
+      "label": "scikit-learn",
+      "kind": "skill",
+      "group": "ai"
     }
   ],
   "edges": [
@@ -438,6 +456,10 @@
       "target": "talentmatch"
     },
     {
+      "source": "profile",
+      "target": "air-quality-model"
+    },
+    {
       "source": "althea-room",
       "target": "skill:testing"
     },
@@ -448,6 +470,22 @@
     {
       "source": "althea-room",
       "target": "skill:nextjs"
+    },
+    {
+      "source": "air-quality-model",
+      "target": "skill:python"
+    },
+    {
+      "source": "air-quality-model",
+      "target": "skill:machine-learning"
+    },
+    {
+      "source": "air-quality-model",
+      "target": "skill:scikit-learn"
+    },
+    {
+      "source": "air-quality-model",
+      "target": "skill:evaluation"
     }
   ]
 }

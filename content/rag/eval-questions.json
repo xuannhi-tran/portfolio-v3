@@ -109,6 +109,15 @@
         " his "
       ],
       "_why": "Toolkit-only skill; the bot refers to Nhi by name, never by pronoun."
+    },
+    {
+      "q": "Has Nhi done any machine learning?",
+      "expect_sources": [
+        "air-quality-model"
+      ],
+      "must_mention": [
+        "0.86"
+      ]
     }
   ]
 }

@@ -10,6 +10,16 @@ export type Pos = Record<string, [number, number]>;
 /** Round to 2 decimals so server and browser produce identical SVG strings (avoids hydration mismatches). */
 const r = (n: number) => Math.round(n * 100) / 100;
 
+/**
+ * Server (Node) and browser can disagree in the last bit of Math.sin/cos, and an angle right at ±π then
+ * lands at opposite ends of the circle, which reorders every skill and breaks hydration. Round the angle
+ * and fold -π onto π so both sides sort identically.
+ */
+function stableAngle(a: number) {
+  const r6 = Math.round(a * 1e6) / 1e6;
+  return r6 <= -Math.round(Math.PI * 1e6) / 1e6 ? Math.round(Math.PI * 1e6) / 1e6 : r6;
+}
+
 /** "Nhi" in the centre, projects on an inner ring, skills on an outer ring ordered to keep threads from crossing. */
 export function layout(graph: Graph): Pos {
   const pos: Pos = {};
@@ -24,15 +34,17 @@ export function layout(graph: Graph): Pos {
   const withAngle = skills.map((s) => {
     // toolkit-only skills hang off the centre; spread them by their place in the list instead
     const ps = graph.edges.filter((e) => e.target === s.id && pos[e.source] && e.source !== "profile").map((e) => angle(e.source));
-    const a = ps.length
-      ? Math.atan2(
-          ps.reduce((acc, t) => acc + Math.sin(t), 0),
-          ps.reduce((acc, t) => acc + Math.cos(t), 0),
-        )
-      : Math.PI / 2 + skills.indexOf(s) * 0.05;
-    return { s, a };
+    // average direction of its projects; rounded, because sin/cos sums can differ in the last bit
+    const sy = Math.round(ps.reduce((acc, t) => acc + Math.sin(t), 0) * 1e6) / 1e6;
+    const sx = Math.round(ps.reduce((acc, t) => acc + Math.cos(t), 0) * 1e6) / 1e6;
+    const a = !ps.length
+      ? Math.PI / 2 + skills.indexOf(s) * 0.05
+      : Math.hypot(sx, sy) < 1e-3
+        ? ps[0] + Math.PI / 2 // projects on opposite sides cancel out: sit between them
+        : Math.atan2(sy, sx);
+    return { s, a: stableAngle(a) };
   });
-  withAngle.sort((x, y) => x.a - y.a);
+  withAngle.sort((x, y) => x.a - y.a || (x.s.id < y.s.id ? -1 : 1));
   const start = withAngle[0]?.a ?? 0;
   withAngle.forEach(({ s }, i) => {
     const t = (i / withAngle.length) * 2 * Math.PI + start;
