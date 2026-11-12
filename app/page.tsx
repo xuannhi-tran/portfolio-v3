@@ -126,9 +126,9 @@ export default function Home() {
         <AskNhi graph={graph} />
       </section>
 
-      {/* 4. Experience: jobs only */}
-      <section id="experience" aria-label="Experience">
-        <div className="section-bar"><span>Experience</span><span>Industry</span></div>
+      {/* 4. Work: jobs only */}
+      <section id="work" aria-label="Work">
+        <div className="section-bar"><span>Work</span><span>Industry</span></div>
         {jobs.map((p) => (
           <WorkArticle key={p.id} p={p} n={fig(p)} />
         ))}

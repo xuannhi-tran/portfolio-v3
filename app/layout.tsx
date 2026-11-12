@@ -26,7 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <header className="site-head">
             <Link href="/" className="mark">Vo Xuan Nhi Tran</Link>
             <nav aria-label="Main">
-              <Link href="/#experience">Experience</Link>
+              <Link href="/#work">Work</Link>
               <Link href="/#projects">Projects</Link>
               <Link href="/#ask">Ask</Link>
               <Link href="/#contact">Contact</Link>
