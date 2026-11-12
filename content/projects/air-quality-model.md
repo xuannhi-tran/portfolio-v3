@@ -11,7 +11,7 @@ stack: [Python, pandas, scikit-learn, Ridge regression, Random Forest, Matplotli
 skills: [python, machine-learning, scikit-learn, evaluation]
 figure:
   id: fig-air-quality
-  idea: "Toggle the inputs and see what actually predicts PM2.5 in 41 European countries."
+  idea: "Step through the real cleaning code as a spreadsheet, then toggle what the model may use."
   disclaimer: "Real data and models from the project, scored on test years they never saw."
 ---
 

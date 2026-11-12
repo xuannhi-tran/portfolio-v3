@@ -631,8 +631,18 @@ mark.vf-info { background: rgb(143 162 255 / .16); box-shadow: inset 0 -2px 0 va
 .cf-grid .gone { color: var(--text-faint); text-decoration: line-through; opacity: .6; }
 .cf-grid .cf-ghost { color: var(--text-faint); font-style: italic; border-right: 0; min-width: 0; }
 .cf-grid .cf-blank { border: 0; background: none; min-width: 0; max-width: none; }
-.cf-grid tr.drop td:not(.cf-blank) { color: var(--text-faint); text-decoration: line-through; text-decoration-color: rgb(224 176 74 / .7); animation: cf-drop .6s var(--ease) .5s both; }
-.cf-why { font-size: 10.5px; color: var(--gold-500); text-decoration: none; padding-left: 4px; animation: cf-in .4s var(--ease) .5s backwards; }
+/* the step's own cells: bright and bold, the rest of the sheet steps back */
+.cf-grid.focus tbody td:not(.hot):not(.cf-blank):not(.cf-ghost) { color: rgb(246 236 210 / .4); }
+.cf-grid.focus tbody tr > td:nth-child(2) { color: var(--text-muted); }
+.cf-grid td.hot { color: #fff8e8; font-weight: 600; background: rgb(224 176 74 / .1); }
+.cf-grid thead th.hot { color: var(--gold-300); background: rgb(224 176 74 / .14); }
+.cf-grid .cf-names td.hot { color: var(--gold-300); }
+.cf-grid tbody tr:not(.cf-names) td.hot.new { background: rgb(224 176 74 / .2); outline: 1px dashed rgb(224 176 74 / .75); outline-offset: -3px; }
+/* a row this step removes: outlined, struck through, with the reason beside it */
+.cf-grid tr.drop td:not(.cf-blank) { color: var(--gold-300); font-weight: 600; background: rgb(224 176 74 / .1); box-shadow: inset 0 1px 0 rgb(224 176 74 / .7), inset 0 -1px 0 rgb(224 176 74 / .7); text-decoration: line-through; text-decoration-color: var(--gold-500); text-decoration-thickness: 1.5px; animation: cf-flag .5s var(--ease) .3s backwards; }
+.cf-grid tbody tr.drop > td:nth-child(2) { background: #2a200f; }
+.cf-ok { font-size: 10.5px; color: var(--text-faint); padding-left: 4px; }
+.cf-why { font-size: 10.5px; font-weight: 600; color: var(--gold-300); text-decoration: none; padding-left: 4px; animation: cf-in .4s var(--ease) .5s backwards; }
 .cf-status { display: flex; justify-content: space-between; gap: var(--space-3); flex-wrap: wrap; font: 400 10.5px/1 var(--font-mono); color: var(--text-faint); padding: 8px 12px; border-top: 1px solid var(--line-strong); background: rgb(255 246 225 / .03); }
 .cf-status span:first-child { color: var(--gold-300); }
 .cf-foot { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-3); align-items: center; }
@@ -642,15 +652,16 @@ mark.vf-info { background: rgb(143 162 255 / .16); box-shadow: inset 0 -2px 0 va
 .cf-nav button:hover:not(:disabled) { border-color: var(--gold-500); color: var(--gold-300); }
 .cf-nav button:disabled { opacity: .35; cursor: default; }
 @keyframes cf-in { from { opacity: 0; transform: translateY(3px); } }
-@keyframes cf-drop { to { opacity: .45; } }
+@keyframes cf-flag { from { background: transparent; box-shadow: none; color: var(--text); text-decoration-color: transparent; } }
 @media (max-width: 760px) {
   .cf { padding: var(--space-3); }
   .cf-sheets { min-height: 0; }
   .cf-foot { grid-template-columns: minmax(0, 1fr); }
   .cf-nav { justify-content: flex-end; }
 }
-@media (prefers-reduced-motion: reduce) { .cf-fx, .cf-why, .cf-sheets .cf-grid .new, .cf-grid tr.drop td { animation: none; } .cf-grid tr.drop td:not(.cf-blank) { opacity: .45; } }
+@media (prefers-reduced-motion: reduce) { .cf-fx, .cf-why, .cf-sheets .cf-grid .new, .cf-grid tr.drop td { animation: none; } }
 /* freeze the row numbers and the country column while a wide sheet scrolls */
 .cf-grid tr > th:first-child { position: sticky; left: 0; z-index: 2; box-sizing: border-box; width: 30px; min-width: 30px; padding: 0; background: #1c160d; }
 .cf-grid tbody tr > td:nth-child(2), .cf-grid thead tr > th:nth-child(2) { position: sticky; left: 30px; z-index: 1; background: #120e08; box-shadow: 1px 0 0 var(--line-strong); }
 .cf-grid thead tr > th:nth-child(2) { background: #1c160d; }
+.cf-grid .cf-names td.hot.new { outline: 1px dashed rgb(224 176 74 / .75); outline-offset: -3px; background: rgb(224 176 74 / .2); }

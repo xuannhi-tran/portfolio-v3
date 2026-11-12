@@ -13,7 +13,8 @@ type Tone = "src" | "new" | "gone";
 type Col = { label: string; num?: boolean; tone?: Tone };
 type Cell = string | number | null;
 type Row = { cells: Cell[]; drop?: string; tone?: "new" };
-type Sheet = { file: string; cols: Col[]; rows: Row[]; more?: boolean };
+// focus: the columns this step is about; they stay bright and the rest of the sheet dims
+type Sheet = { file: string; cols: Col[]; rows: Row[]; more?: boolean; focus?: number[]; headOnly?: boolean };
 
 // energy rows: country, year, [coal, gas, oil], [hydro, nuclear, solar, wind, other renewables], emit sum, clean sum
 const E: [string, number, Cell[], Cell[], Cell, Cell][] = [
@@ -53,6 +54,7 @@ const merged = (rows: typeof E, drops: Record<string, string>): Row[] =>
 const rawEnergy = (sums: boolean): Sheet => ({
   file: ENERGY_FILE,
   more: true,
+  focus: sums ? [10, 11] : undefined,
   cols: [
     C.country,
     C.year,
@@ -94,6 +96,8 @@ const STEPS: { title: string; what: string; code: string; status: string; sheets
       { file: "energy_subset", cols: [C.country, C.year, ...SUMS()], rows: E.map(([c, y, , , e, k]) => ({ cells: [c, y, e, k] })) },
       {
         file: "pm25_df",
+        focus: [0, 1, 2, 3],
+        headOnly: true, // only the column names change here
         cols: [{ label: "country", tone: "new" }, { label: "Code", tone: "gone" }, { label: "year", num: true, tone: "new" }, { ...PM_COL, tone: "new" }],
         rows: P.map((r) => ({ cells: r })),
       },
@@ -107,6 +111,7 @@ const STEPS: { title: string; what: string; code: string; status: string; sheets
     sheets: [
       {
         file: "merged_df",
+        focus: [4],
         cols: [C.country, C.year, ...SUMS(), { ...PM_COL, tone: "new" }],
         rows: [
           ...merged(E.slice(0, 6), {}),
@@ -144,6 +149,7 @@ const show = (v: Cell) => (v === null ? "" : String(v));
 
 function Grid({ sheet, step }: { sheet: Sheet; step: number }) {
   const notes = sheet.rows.some((r) => r.drop);
+  const hot = (i: number) => sheet.focus?.includes(i) ?? false;
   const scroller = useRef<HTMLDivElement>(null);
   const added = sheet.cols.findIndex((c) => c.tone === "new");
   // a wide sheet: when this step adds columns at the far right, scroll them into view
@@ -157,12 +163,12 @@ function Grid({ sheet, step }: { sheet: Sheet; step: number }) {
     <div className="cf-sheet">
       <div className="cf-file">{sheet.file}</div>
       <div className="cf-scroll" ref={scroller}>
-        <table className="cf-grid">
+        <table className={`cf-grid ${sheet.focus && !sheet.headOnly ? "focus" : ""}`}>
           <thead>
             <tr>
               <th className="cf-corner" aria-hidden />
               {sheet.cols.map((c, i) => (
-                <th key={i} className={c.tone}>{letter(i)}</th>
+                <th key={i} className={`${c.tone ?? ""} ${hot(i) ? "hot" : ""}`}>{letter(i)}</th>
               ))}
               {sheet.more && <th className="cf-ghost">…</th>}
               {notes && <th className="cf-blank" />}
@@ -172,7 +178,7 @@ function Grid({ sheet, step }: { sheet: Sheet; step: number }) {
             <tr className="cf-names">
               <th>1</th>
               {sheet.cols.map((c, i) => (
-                <td key={i} className={`${c.tone ?? ""} ${c.num ? "num" : ""}`} title={c.label}>
+                <td key={i} className={`${c.tone ?? ""} ${c.num ? "num" : ""} ${hot(i) ? "hot" : ""}`} title={c.label}>
                   {c.label}
                 </td>
               ))}
@@ -183,12 +189,16 @@ function Grid({ sheet, step }: { sheet: Sheet; step: number }) {
               <tr key={`${step}-${r.cells[0]}`} className={r.drop ? "drop" : ""}>
                 <th>{j + 2}</th>
                 {r.cells.map((v, i) => (
-                  <td key={i} className={`${sheet.cols[i].tone ?? ""} ${sheet.cols[i].num ? "num" : ""}`}>
+                  <td key={i} className={`${sheet.cols[i].tone ?? ""} ${sheet.cols[i].num ? "num" : ""} ${hot(i) && !sheet.headOnly ? "hot" : ""}`}>
                     {show(v)}
                   </td>
                 ))}
                 {sheet.more && <td className="cf-ghost" />}
-                {notes && <td className="cf-blank">{r.drop && <span className="cf-why">✕ {r.drop}</span>}</td>}
+                {notes && (
+                  <td className="cf-blank">
+                    {r.drop ? <span className="cf-why">✕ {r.drop}</span> : <span className="cf-ok">✓ kept</span>}
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
