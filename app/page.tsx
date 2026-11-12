@@ -3,8 +3,7 @@ import AskNhi from "@/components/AskNhi";
 import FigureFrame from "@/components/FigureFrame";
 import HeroShowcase from "@/components/HeroShowcase";
 import Reveal from "@/components/Reveal";
-import Timeline from "@/components/Timeline";
-import { getGraph, getProfile, getProjects, type Item } from "@/lib/content";
+import { getGraph, getProfile, getProjects, type Item, type Project } from "@/lib/content";
 
 function ItemList({ items }: { items: Item[] }) {
   return (
@@ -20,10 +19,50 @@ function ItemList({ items }: { items: Item[] }) {
   );
 }
 
+/** One job or project: summary, highlights, links and its FIG. */
+function WorkArticle({ p, n }: { p: Project; n: number }) {
+  return (
+    <article id={p.id} className="work">
+      <header className="work-head">
+        <div>
+          <h2 className="work-title">{p.type === "experience" ? p.org : p.title}</h2>
+          <p className="work-sub">{p.type === "experience" ? p.title : p.subtitle}</p>
+        </div>
+        <p className="work-when">
+          {p.period.replace(/Present/i, "now")}
+          {p.location && <><br />{p.location}</>}
+        </p>
+      </header>
+      <div className="work-body">
+        <p className="work-summary">{p.summary}</p>
+        <div>
+          <ul className="work-points">
+            {p.highlights.slice(0, 4).map((h, j) => (
+              <li key={j} dangerouslySetInnerHTML={{ __html: h }} />
+            ))}
+          </ul>
+          {p.stack.length > 0 && <p className="work-tags">{p.stack.join(" · ")}</p>}
+          <p className="work-links">
+            <Link href={`/work/${p.id}`} className="work-more">Read the case study ↗</Link>
+            {p.links.live && <a href={p.links.live} className="work-more" target="_blank" rel="noopener">Live demo ↗</a>}
+            {p.links.repo && <a href={p.links.repo} className="work-more" target="_blank" rel="noopener">Code ↗</a>}
+          </p>
+        </div>
+      </div>
+      {p.figure && <FigureFrame figure={p.figure} n={n} />}
+    </article>
+  );
+}
+
 export default function Home() {
   const profile = getProfile();
   const projects = getProjects();
   const graph = getGraph();
+  const jobs = projects.filter((p) => p.type === "experience");
+  const builds = projects.filter((p) => p.type !== "experience");
+  // FIG. 1 is Ask Nhi; the rest are numbered in page order, jobs first
+  const order = [...jobs, ...builds];
+  const fig = (p: Project) => order.indexOf(p) + 2;
   const [first, ...rest] = profile.name.split(" ");
 
   return (
@@ -87,46 +126,20 @@ export default function Home() {
         <AskNhi graph={graph} />
       </section>
 
-      {/* 4. Work */}
-      <section id="work" aria-label="Work">
-        <div className="section-bar"><span>Work</span><span>Industry and projects</span></div>
-        {projects.map((p, i) => (
-          <article key={p.id} id={p.id} className="work">
-            <header className="work-head">
-              <div>
-                <h2 className="work-title">{p.type === "experience" ? p.org : p.title}</h2>
-                <p className="work-sub">{p.type === "experience" ? p.title : p.subtitle}</p>
-              </div>
-              <p className="work-when">
-                {p.period.replace(/Present/i, "now")}
-                {p.location && <><br />{p.location}</>}
-              </p>
-            </header>
-            <div className="work-body">
-              <p className="work-summary">{p.summary}</p>
-              <div>
-                <ul className="work-points">
-                  {p.highlights.slice(0, 4).map((h, j) => (
-                    <li key={j} dangerouslySetInnerHTML={{ __html: h }} />
-                  ))}
-                </ul>
-                {p.stack.length > 0 && <p className="work-tags">{p.stack.join(" · ")}</p>}
-                <p className="work-links">
-                  <Link href={`/work/${p.id}`} className="work-more">Read the case study ↗</Link>
-                  {p.links.live && <a href={p.links.live} className="work-more" target="_blank" rel="noopener">Live demo ↗</a>}
-                  {p.links.repo && <a href={p.links.repo} className="work-more" target="_blank" rel="noopener">Code ↗</a>}
-                </p>
-              </div>
-            </div>
-            {p.figure && <FigureFrame figure={p.figure} n={i + 2} />}
-          </article>
+      {/* 4. Experience: jobs only */}
+      <section id="experience" aria-label="Experience">
+        <div className="section-bar"><span>Experience</span><span>Industry</span></div>
+        {jobs.map((p) => (
+          <WorkArticle key={p.id} p={p} n={fig(p)} />
         ))}
       </section>
 
-      {/* 5. Experience */}
-      <section id="experience" aria-label="Experience">
-        <div className="section-bar"><span>Experience</span><span>Since 2024</span></div>
-        <Timeline />
+      {/* 5. Projects */}
+      <section id="projects" aria-label="Projects">
+        <div className="section-bar"><span>Projects</span><span>Uni, hackathon and personal</span></div>
+        {builds.map((p) => (
+          <WorkArticle key={p.id} p={p} n={fig(p)} />
+        ))}
       </section>
 
       {/* 6. Education / Recognition / Toolkit */}

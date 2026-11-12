@@ -25,7 +25,9 @@ export default async function CaseStudy({ params }: Props) {
   return (
     <main>
       <header className="case-head">
-        <Link href="/#work" className="back">← ALL WORK</Link>
+        <Link href={p.type === "experience" ? "/#experience" : "/#projects"} className="back">
+          {p.type === "experience" ? "← EXPERIENCE" : "← ALL PROJECTS"}
+        </Link>
         <h1 className="display">{heading}</h1>
         <p className="lede">{sub}</p>
         <div className="case-meta">
