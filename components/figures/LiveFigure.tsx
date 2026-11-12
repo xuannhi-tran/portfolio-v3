@@ -8,7 +8,7 @@ const IDLE_MS = 3000;
 
 /**
  * A figure that plays itself while it is on screen, like a looping clip.
- * The moment the visitor clicks, types or drags inside it, the autoplay stops and it is theirs;
+ * The moment the visitor clicks or types inside it (scrolling past doesn't count), the autoplay stops and it is theirs;
  * after IDLE_MS without input it picks the autoplay back up.
  */
 export default function LiveFigure({ id }: { id: string }) {
@@ -28,7 +28,9 @@ export default function LiveFigure({ id }: { id: string }) {
       clearTimeout(t);
       t = setTimeout(() => setBusy(false), IDLE_MS);
     };
-    const evs = ["pointerdown", "keydown", "input"] as const;
+    // only real use counts: a finger that lands on the figure while scrolling the page (pointerdown on a phone)
+    // must not pause it, or every scroll would restart the demo before it ever reaches the end
+    const evs = ["click", "keydown", "input", "change"] as const;
     evs.forEach((ev) => el.addEventListener(ev, touch, { passive: true }));
     return () => {
       io.disconnect();
