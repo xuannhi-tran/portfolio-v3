@@ -8,6 +8,12 @@
       "href": "#about"
     },
     {
+      "id": "ask-nhi-agent",
+      "label": "Ask Nhi Agent",
+      "kind": "project",
+      "href": "/work/ask-nhi-agent"
+    },
+    {
       "id": "althea-room",
       "label": "Althea Room LLC",
       "kind": "experience",
@@ -252,6 +258,24 @@
       "label": "scikit-learn",
       "kind": "skill",
       "group": "ai"
+    },
+    {
+      "id": "skill:langgraph",
+      "label": "LangGraph",
+      "kind": "skill",
+      "group": "ai"
+    },
+    {
+      "id": "skill:mcp",
+      "label": "MCP",
+      "kind": "skill",
+      "group": "ai"
+    },
+    {
+      "id": "skill:azure",
+      "label": "Azure",
+      "kind": "skill",
+      "group": "devops"
     }
   ],
   "edges": [
@@ -425,10 +449,6 @@
     },
     {
       "source": "profile",
-      "target": "skill:docker"
-    },
-    {
-      "source": "profile",
       "target": "skill:java"
     },
     {
@@ -460,6 +480,10 @@
       "target": "air-quality-model"
     },
     {
+      "source": "profile",
+      "target": "ask-nhi-agent"
+    },
+    {
       "source": "althea-room",
       "target": "skill:testing"
     },
@@ -486,6 +510,66 @@
     {
       "source": "air-quality-model",
       "target": "skill:evaluation"
+    },
+    {
+      "source": "ask-nhi-agent",
+      "target": "skill:python"
+    },
+    {
+      "source": "ask-nhi-agent",
+      "target": "skill:langgraph"
+    },
+    {
+      "source": "ask-nhi-agent",
+      "target": "skill:mcp"
+    },
+    {
+      "source": "ask-nhi-agent",
+      "target": "skill:llm"
+    },
+    {
+      "source": "ask-nhi-agent",
+      "target": "skill:rag"
+    },
+    {
+      "source": "ask-nhi-agent",
+      "target": "skill:embeddings"
+    },
+    {
+      "source": "ask-nhi-agent",
+      "target": "skill:pgvector"
+    },
+    {
+      "source": "ask-nhi-agent",
+      "target": "skill:prompt-engineering"
+    },
+    {
+      "source": "ask-nhi-agent",
+      "target": "skill:evaluation"
+    },
+    {
+      "source": "ask-nhi-agent",
+      "target": "skill:fastapi"
+    },
+    {
+      "source": "ask-nhi-agent",
+      "target": "skill:rate-limiting"
+    },
+    {
+      "source": "ask-nhi-agent",
+      "target": "skill:testing"
+    },
+    {
+      "source": "ask-nhi-agent",
+      "target": "skill:docker"
+    },
+    {
+      "source": "ask-nhi-agent",
+      "target": "skill:github-actions"
+    },
+    {
+      "source": "ask-nhi-agent",
+      "target": "skill:azure"
     }
   ]
 }
