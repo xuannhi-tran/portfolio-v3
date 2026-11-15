@@ -11,10 +11,14 @@ const mono = JetBrains_Mono({ subsets: ["latin", "vietnamese"], weight: ["400", 
 
 const description = "Portfolio of Vo Xuan Nhi Tran, Software Engineering student at the University of Sydney. Ask Nhi anything: a RAG chatbot that answers from Nhi’s work, with sources.";
 
+// The live site. Share previews (LinkedIn, iMessage…) build the OG image URL from this.
+const SITE = "https://xuannhi.me";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE),
   title: { default: "Vo Xuan Nhi Tran", template: "%s · Vo Xuan Nhi Tran" },
   description,
-  openGraph: { title: "Vo Xuan Nhi Tran", description, type: "website", locale: "en_AU", siteName: "Vo Xuan Nhi Tran" },
+  openGraph: { title: "Vo Xuan Nhi Tran", description, type: "website", url: SITE, locale: "en_AU", siteName: "Vo Xuan Nhi Tran" },
   twitter: { card: "summary_large_image", title: "Vo Xuan Nhi Tran", description },
 };
 
