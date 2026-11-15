@@ -33,6 +33,9 @@ export type Profile = {
   preferred_name: string;
   location: string;
   looking_for: string;
+  role_line: string; // hero line under the name
+  pitch: string; // hero: what Nhi builds, with evidence
+  status: string; // hero: year of study, graduation, city
   links: Record<string, string>;
   facts: { label: string; value: string; sub?: string }[];
   education: Item[];

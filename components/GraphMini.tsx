@@ -8,7 +8,7 @@ export default function GraphMini({ graph }: { graph: Graph }) {
     <a href="#ask" className="fig mini-graph" aria-label="Open FIG. 1: ask Nhi">
       <div className="fig-inner">
         <div className="fig-head">
-          <span>FIG. 1 · {graph.nodes.filter((n) => n.kind === "project" || n.kind === "experience").length} PROJECTS, {graph.edges.length} THREADS</span>
+          <span>FIG. 1 · ASK AN AI ABOUT MY WORK</span>
           <span className="fig-status">ASK ↓</span>
         </div>
         <svg viewBox={`0 0 ${W} ${H}`} aria-hidden>

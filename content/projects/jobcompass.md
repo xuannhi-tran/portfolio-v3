@@ -43,7 +43,7 @@ International students in Australia have to check every job ad against their stu
 ## Results
 
 - **75% overall accuracy** on 20 unseen job ads.
-- **0% false-positive rate** for ineligible visa recommendations. It never told a student an ineligible job was fine.
+- **0 false positives** on the same 20 ads: it never told a student an ineligible job was fine.
 - Served **40 students** and **41 job-ad checks**.
 
 ## What I learned

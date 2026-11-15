@@ -55,7 +55,7 @@ function analyse(text: string): Finding[] {
     f.kind = perFortnight <= LIMIT ? "ok" : "warn";
     f.note =
       perFortnight <= LIMIT
-        ? `Up to ${perFortnight} h per fortnight, within the ${LIMIT} h limit during semester.`
+        ? `Ad says up to ${hi} h per ${m[4].toLowerCase()}${m[4].toLowerCase() === "week" ? ` (${perFortnight} h per fortnight)` : ""}, under the ${LIMIT} h limit during semester.`
         : `${perFortnight} h per fortnight is over the ${LIMIT} h limit. Only possible in official breaks.`;
   }
 

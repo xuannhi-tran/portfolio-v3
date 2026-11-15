@@ -28,16 +28,16 @@ links:
 figure:
   id: fig-retrieval
   idea: "Ask a question. The top chunks light up and the answer cites them."
-  disclaimer: "Made-up handbook, TF-IDF in your browser."
+  disclaimer: "A simulation: TF-IDF on a made-up handbook, in your browser. The real app uses embeddings, pgvector and Gemini."
 ---
 
 # RAG Document Assistant
 
 ## Problem
 
-<!-- TODO(Nhi): why did you build it? -->
+<!-- Draft by Claude: Nhi, check it's true and reword in your own voice. -->
 
-Honestly this project is mainly for me to learn about RAG, embedding...
+I wanted to understand how retrieval grounds an LLM's answers, so I built the whole pipeline myself: PDF ingestion, embeddings in pgvector, and answers grounded in the uploaded text, in English and Vietnamese.
 
 ## What I built
 

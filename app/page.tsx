@@ -77,7 +77,9 @@ export default function Home() {
               <br />
               <span>{rest.at(-1)}</span>
             </h1>
-            <p className="hero-role">Software Engineer · University of Sydney</p>
+            <p className="hero-role">{profile.role_line}</p>
+            <p className="hero-pitch">{profile.pitch}</p>
+            <p className="hero-status">{profile.status}</p>
             <div className="hero-links">
               <a className="hero-cv" href="/Vo_Xuan_Nhi_Tran_CV.pdf" target="_blank" rel="noopener">
                 Resume <span aria-hidden>↓</span>

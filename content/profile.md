@@ -5,20 +5,23 @@ name: Vo Xuan Nhi Tran
 preferred_name: Nhi
 location: Sydney, Australia
 looking_for: Software engineering internship or junior role
+role_line: Software Engineering student at USyd · Backend Software Engineer at Althea Room
+pitch: "I build and ship software end to end: production APIs and databases at Althea Room, CI/CD to Google Play, and an AI tool 40 students used."
+status: Penultimate year in 2027 · Graduating 2028 · Sydney
 links:
   email: xuannhi2k6@gmail.com
   github: https://github.com/xuannhi-tran
   linkedin: https://linkedin.com/in/xuannhi-tran
 facts:
   - label: Currently
-    value: Software Engineer (part-time)
+    value: Backend Software Engineer (part-time)
     sub: Althea Room LLC, remote
   - label: Studying
     value: B.Eng (Hons) Software Engineering
     sub: University of Sydney, 2024 to 2028
-  - label: Based
-    value: Sydney
-    sub: New South Wales, Australia
+  - label: Scholarships
+    value: Dalyell Scholar
+    sub: and Vice Chancellor's International Scholarship
 education:
   - title: Bachelor of Engineering (Honours), Software Engineering
     sub: University of Sydney · 2024 to 2028 (expected)
