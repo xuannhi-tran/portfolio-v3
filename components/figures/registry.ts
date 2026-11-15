@@ -1,4 +1,5 @@
 import type { ComponentType } from "react";
+import AgentFig from "./AgentFig";
 import AirQualityFig from "./AirQualityFig";
 import AltheaFig from "./AltheaFig";
 import MatchFig from "./MatchFig";
@@ -8,6 +9,7 @@ import VisaFig from "./VisaFig";
 
 /** Interactive figures, keyed by the figure id in content/projects/*.md. `demo` makes a figure play itself. */
 export const FIGURES: Record<string, { head: string; Component: ComponentType<{ demo?: boolean }> }> = {
+  "fig-agent-loop": { head: "LANGGRAPH · AGENT LOOP · REPLAY", Component: AgentFig },
   "fig-retrieval": { head: "SIMULATION · TF-IDF IN YOUR BROWSER · 8 CHUNKS", Component: RetrievalFig },
   "fig-visa-check": { head: "VISA CHECK · STUDENT VISA · 48 H / FORTNIGHT", Component: VisaFig },
   "fig-althea": { head: "ALTHEA · CI/CD + DB MIGRATION", Component: AltheaFig },
