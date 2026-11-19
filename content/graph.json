@@ -50,6 +50,12 @@
       "href": "/work/air-quality-model"
     },
     {
+      "id": "youtube-dubber",
+      "label": "YouTube Dubber",
+      "kind": "project",
+      "href": "/work/youtube-dubber"
+    },
+    {
       "id": "skill:android",
       "label": "Android",
       "kind": "skill",
@@ -276,6 +282,18 @@
       "label": "Azure",
       "kind": "skill",
       "group": "devops"
+    },
+    {
+      "id": "skill:speech-ai",
+      "label": "Speech AI (ASR/TTS)",
+      "kind": "skill",
+      "group": "ai"
+    },
+    {
+      "id": "skill:ffmpeg",
+      "label": "ffmpeg",
+      "kind": "skill",
+      "group": "backend"
     }
   ],
   "edges": [
@@ -570,6 +588,42 @@
     {
       "source": "ask-nhi-agent",
       "target": "skill:azure"
+    },
+    {
+      "source": "profile",
+      "target": "youtube-dubber"
+    },
+    {
+      "source": "youtube-dubber",
+      "target": "skill:python"
+    },
+    {
+      "source": "youtube-dubber",
+      "target": "skill:speech-ai"
+    },
+    {
+      "source": "youtube-dubber",
+      "target": "skill:llm"
+    },
+    {
+      "source": "youtube-dubber",
+      "target": "skill:prompt-engineering"
+    },
+    {
+      "source": "youtube-dubber",
+      "target": "skill:evaluation"
+    },
+    {
+      "source": "youtube-dubber",
+      "target": "skill:ffmpeg"
+    },
+    {
+      "source": "youtube-dubber",
+      "target": "skill:testing"
+    },
+    {
+      "source": "youtube-dubber",
+      "target": "skill:github-actions"
     }
   ]
 }
