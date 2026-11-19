@@ -48,6 +48,7 @@ function WebPage({ demo }: { demo?: boolean }) {
   const [subs, setSubs] = useState(true);
   const [at, setAt] = useState(-1); // last log line shown; -1 = no job yet
   const [playing, setPlaying] = useState(false);
+  const [watching, setWatching] = useState(false); // the mock player in "Finished videos"
   const lines = script(speaker, subs);
   const last = lines.length - 1;
   const done = at >= last;
@@ -69,14 +70,15 @@ function WebPage({ demo }: { demo?: boolean }) {
   }, [at]);
 
   const start = () => {
+    setWatching(false);
     setAt(0);
     setPlaying(true);
   };
 
   // autoplay: the whole job, then linger on "Done"
-  const steps: (() => void)[] = [() => { setPlaying(false); setAt(-1); }];
+  const steps: (() => void)[] = [() => { setPlaying(false); setAt(-1); setWatching(false); }];
   lines.forEach((_, i) => steps.push(() => setAt(i)));
-  steps.push(() => {}, () => {}, () => {});
+  steps.push(() => setWatching(true), () => {}, () => {}, () => {});
   useDemo(demo, steps, 900);
 
   const label = done ? "All steps done" : stage ? `Step ${stage}/5: ${STEPS[stage - 1]}` : "";
@@ -139,6 +141,36 @@ function WebPage({ demo }: { demo?: boolean }) {
             {done && <p className="yd-muted">The video is under “Finished videos” below.</p>}
           </div>
         )}
+        </div>
+
+        <h5>Finished videos</h5>
+        <div className="yd-fin">
+          {!done ? (
+            <p className="yd-muted">No videos yet.</p>
+          ) : (
+            <div className="yd-card yd-vid">
+              <button
+                type="button"
+                className={`yd-thumb${watching ? " is-playing" : ""}`}
+                onClick={() => setWatching((w) => !w)}
+                aria-label={watching ? "Pause preview" : "Play preview"}
+              >
+                <span className="yd-pic" aria-hidden>{watching ? "▮▮" : "▶"}</span>
+                <span className="yd-sub">{subs ? "Vietnamese subtitles sit here, in the black bar under the picture" : ""}</span>
+                <span className="yd-scrub" aria-hidden><i /></span>
+              </button>
+              <div className="yd-vinfo">
+                <b>VIDEO_ID</b>
+                <span className="yd-muted">dubbed.mp4 · Vietnamese voice-over{subs ? " + subtitles" : ""}</span>
+                <div className="yd-acts">
+                  <span>Download</span>
+                  <span>Make thumbnail</span>
+                  <span>Translate again</span>
+                  <span>Delete</span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
